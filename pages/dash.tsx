@@ -9,17 +9,22 @@ import useSWR, { useSWRConfig } from "swr";
 import api from "../utils/api";
 import Receita from "./core/Receita";
 import Despesa from "./core/Despesa";
+import Compra from "./core/Compra";
 import FormularioDesp from "../components/FormularioDesp";
+import Compras from "../components/Compras";
+import FormularioCompras from "../components/FormularioCompras";
 
 export default function Dash() {
   const [tabelaNome, settabelaNome] = useState("Receitas");
   const [visivel, setVisivel] = useState<"tabela" | "form">("tabela");
   const [receita, SetReceita] = useState<Receita>(Receita.vazio());
   const [despesa, SetDespesa] = useState<Despesa>(Despesa.vazio());
+  const [compra, SetCompra] = useState<Compra>(Compra.vazio());
 
   const { mutate } = useSWRConfig();
   const { data: receitas } = useSWR("/api/receitas", api);
   const { data: despesas } = useSWR("/api/despesas", api);
+  const { data: compras } = useSWR("/api/compras", api);
 
   if (!receitas) return "Carregando...";
 
@@ -63,11 +68,32 @@ export default function Dash() {
 
     console.log("Excluir:" + despesas._id);
   };
+  const compraExcluida = async (compras) => {
+    await fetch(
+      "/api/compras",
+
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(compras._id),
+      }
+    );
+    mutate("/api/compras");
+  };
 
   function despesaSelecionada(despesas) {
     SetDespesa(despesas);
     setVisivel("form");
     console.log(despesas.conta);
+  }
+
+  function compraSelecionada(compras) {
+    SetCompra(compras);
+    setVisivel("form");
+    console.log(compras.fornecedor);
   }
 
   function novaReceita() {
@@ -76,6 +102,10 @@ export default function Dash() {
   }
   function novaDespesa() {
     SetDespesa(Despesa.vazio());
+    setVisivel("form");
+  }
+  function novaCompra() {
+    SetCompra(Compra.vazio());
     setVisivel("form");
   }
 
@@ -112,6 +142,24 @@ export default function Dash() {
     mutate("/api/despesas");
     setVisivel("tabela");
   };
+  const salvarCompra = async (Compras) => {
+    console.log(Compras);
+
+    await fetch(
+      "/api/compras",
+
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(Compras),
+      }
+    );
+    mutate("/api/compras");
+    setVisivel("tabela");
+  };
 
   return (
     <div>
@@ -136,7 +184,7 @@ export default function Dash() {
                       <div className="flex justify-between">
                         <img className="w-8" src="receita.png" />
                         <div className="text-lg font-medium text-gray-700">
-                          Receita Total
+                          Receita
                         </div>
 
                         <div className="bg-green-500 rounded-full h-6 px-2 flex justify-items-center text-white font-semibold text-sm">
@@ -184,7 +232,7 @@ export default function Dash() {
                       <div className="flex justify-between">
                         <img className="w-8" src="despesas.png" />
                         <div className="text-lg font-medium text-gray-700">
-                          Despesa Total
+                          Despesa
                         </div>
 
                         <div className="bg-yellow-500 rounded-full h-6 px-2 flex justify-items-center text-white font-semibold text-sm">
@@ -221,49 +269,54 @@ export default function Dash() {
                       </div>
                     </div>
                   </button>
-                  <a
+                  <button
                     className="transform  hover:scale-105 transition duration-300 shadow-xl rounded-lg col-span-12 sm:col-span-6 xl:col-span-3 intro-y bg-white"
-                    href="#"
+                    onClick={function () {
+                      settabelaNome("Compras");
+                      mutate("/api/compras");
+                    }}
                   >
                     <div className="p-5">
                       <div className="flex justify-between">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-7 w-7 text-pink-600"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"
-                          />
-                        </svg>
-                        <div className="bg-yellow-500 rounded-full h-6 px-2 flex justify-items-center text-white font-semibold text-sm">
-                          <span className="flex items-center">30%</span>
+                        <img className="w-8" src="compras.png" />
+                        <div className="text-lg font-medium text-gray-700">
+                          Compras
+                        </div>
+
+                        <div className="bg-blue-500 rounded-full h-6 px-2 flex justify-items-center text-white font-semibold text-sm">
+                          <span className="flex items-center font-mono font-light">
+                            145.545,50
+                          </span>
                         </div>
                       </div>
-                      <div className="ml-2 w-full flex-1">
-                        <div>
-                          <div className="mt-3 text-3xl font-bold leading-8">
-                            4.510
+                      <div className="ml-2 flex justify-between">
+                        <div className="flex flex-col justify-center items-center">
+                          <div className="mt-3 font-medium tracking-tighter leading-8">
+                            114.4
                           </div>
-
-                          <div className="mt-1 text-base text-gray-600">
-                            Item Sales
+                          <div className=" text-base text-gray-600">QI</div>
+                        </div>
+                        <div className="flex flex-col justify-center items-center">
+                          <div className="mt-3 font-medium tracking-tighter leading-8">
+                            24.510
                           </div>
+                          <div className="text-base text-gray-600">QNE</div>
+                        </div>
+                        <div className="flex flex-col justify-center items-center">
+                          <div className="mt-3  font-medium tracking-tighter leading-8">
+                            24.510
+                          </div>
+                          <div className="text-base text-gray-600">NRT</div>
+                        </div>
+                        <div className="flex flex-col justify-center items-center">
+                          <div className="mt-3  font-medium tracking-tighter leading-8">
+                            24.510
+                          </div>
+                          <div className=" text-base text-gray-600">SDS</div>
                         </div>
                       </div>
                     </div>
-                  </a>
+                  </button>
                   <a
                     className="transform  hover:scale-105 transition duration-300 shadow-xl rounded-lg col-span-12 sm:col-span-6 xl:col-span-3 intro-y bg-white"
                     href="#"
@@ -312,18 +365,25 @@ export default function Dash() {
                         <div className=" flex items-center font-bold text-lg gap-8">
                           <div>{tabelaNome}</div>
                           <div>
-                            {tabelaNome === "Receitas" ? (
+                            {tabelaNome === "Receitas" && (
                               <Botao cor="blue" onClick={() => novaReceita()}>
                                 Adicionar
                               </Botao>
-                            ) : (
+                            )}
+                            {tabelaNome === "Despesas" && (
                               <Botao cor="blue" onClick={() => novaDespesa()}>
+                                Adicionar
+                              </Botao>
+                            )}
+                            {tabelaNome === "Compras" && (
+                              <Botao cor="blue" onClick={() => novaCompra()}>
                                 Adicionar
                               </Botao>
                             )}
                           </div>
                         </div>
-                        {tabelaNome === "Receitas" ? (
+                        {/* {unreadMessages.length > 0 && */}
+                        {tabelaNome === "Receitas" && (
                           <div className="mt-4">
                             <div className="flex flex-col">
                               <div className="-my-2 overflow-x-auto">
@@ -338,7 +398,9 @@ export default function Dash() {
                               </div>
                             </div>
                           </div>
-                        ) : (
+                        )}
+
+                        {tabelaNome === "Despesas" && (
                           <div className="mt-4">
                             <div className="flex flex-col">
                               <div className="-my-2 overflow-x-auto">
@@ -354,19 +416,43 @@ export default function Dash() {
                             </div>
                           </div>
                         )}
+                        {tabelaNome === "Compras" && (
+                          <div className="mt-4">
+                            <div className="flex flex-col">
+                              <div className="-my-2 overflow-x-auto">
+                                <div className="py-2 align-middle inline-block min-w-full">
+                                  <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg bg-white"></div>
+                                  <Compras
+                                    compras={compras.data}
+                                    compraSelecionada={compraSelecionada}
+                                    compraExcluida={compraExcluida}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </>
                     ) : (
                       <div>
-                        {tabelaNome === "Receitas" ? (
+                        {tabelaNome === "Receitas" && (
                           <Formulario
                             receita={receita}
                             receitaMudou={salvarReceita}
                             cancelado={() => setVisivel("tabela")}
                           />
-                        ) : (
+                        )}
+                        {tabelaNome === "Despesas" && (
                           <FormularioDesp
                             despesa={despesa}
                             despesaMudou={salvarDespesa}
+                            cancelado={() => setVisivel("tabela")}
+                          />
+                        )}
+                        {tabelaNome === "Compras" && (
+                          <FormularioCompras
+                            compra={compra}
+                            compraMudou={salvarCompra}
                             cancelado={() => setVisivel("tabela")}
                           />
                         )}

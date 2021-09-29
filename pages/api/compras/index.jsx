@@ -8,16 +8,9 @@ const handler = async (req, res) => {
   try {
     const { db } = await connectToDatabase();
     const { method } = req;
-    const {
-      conta,
-      valor,
-      descricao,
-      fornecedor,
-      tipo,
-      data_desp,
-      id,
-      comprovante,
-    } = req.body;
+    const { nf, valor, fornecedor, data_compra, id } = req.body;
+    const valores = req.body;
+    console.log(valores.values);
     switch (method) {
       case "GET":
         //buscar no mongodb
@@ -25,7 +18,7 @@ const handler = async (req, res) => {
 
         //const { db } = await connectToDatabase();
         const data = await db
-          .collection("despesas")
+          .collection("compras")
           .find()
           .limit(100)
           .sort({ data: -1 })
@@ -36,18 +29,15 @@ const handler = async (req, res) => {
         break;
 
       case "POST":
-        const despesa = await db.collection("despesas").updateOne(
+        const compra = await db.collection("compras").updateOne(
           { _id: ObjectId(id) },
           [
             {
               $set: {
-                conta: conta,
                 valor: valor,
-                descricao: descricao,
                 fornecedor: fornecedor,
-                tipo: tipo,
-                data: new Date(data_desp),
-                comprovante: comprovante,
+                nf: nf,
+                data: new Date(data_compra),
               },
             },
           ],
@@ -55,7 +45,7 @@ const handler = async (req, res) => {
           { upsert: true }
         );
 
-        res.status(200).json(despesa);
+        res.status(200).json(compra);
 
         //res.redirect([200], "/");
         // res.redirect();
@@ -65,11 +55,11 @@ const handler = async (req, res) => {
       case "DELETE":
         const del = req.body;
         console.log(del);
-        const despesadel = await db
-          .collection("despesas")
+        const compradel = await db
+          .collection("compras")
           .deleteOne({ _id: ObjectId(del) });
 
-        res.status(200).json(despesadel);
+        res.status(200).json(compradel);
 
         break;
 

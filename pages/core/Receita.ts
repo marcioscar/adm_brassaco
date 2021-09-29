@@ -23,7 +23,7 @@ export default class Receita {
   }
 
   static vazio() {
-    return new Receita("", 0, "", "", new Date(), "");
+    return new Receita("", null, "", "", new Date(), "");
   }
 
   get id() {

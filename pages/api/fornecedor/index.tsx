@@ -9,7 +9,7 @@ const handler = async (req, res) => {
     const { db } = await connectToDatabase();
     const { method } = req;
 
-    const { conta, valor, descricao, loja, data_rec, id } = req.body;
+    const nome = req.body;
 
     switch (method) {
       case "GET":
@@ -25,16 +25,11 @@ const handler = async (req, res) => {
 
       case "POST":
         const fornecedor = await db.collection("fornecedores").updateOne(
-          { _id: ObjectId(id) },
+          { nome: nome },
           [
             {
               $set: {
-                conta: conta,
-                valor: valor,
-                descricao: descricao,
-                loja: loja,
-                //data: new Date(),
-                data: new Date(data_rec),
+                nome: nome,
               },
             },
           ],
@@ -42,21 +37,7 @@ const handler = async (req, res) => {
           { upsert: true }
         );
 
-        res.status(200).json(receita);
-
-        //res.redirect([200], "/");
-        // res.redirect();
-
-        break;
-
-      case "DELETE":
-        const del = req.body;
-
-        const receitadel = await db
-          .collection("fornecedores")
-          .deleteOne({ _id: ObjectId(del) });
-
-        res.status(200).json(receitadel);
+        res.status(200).json(fornecedor);
 
         break;
 

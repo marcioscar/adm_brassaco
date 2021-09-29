@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import { IconeEdicao, IconeDelete } from "./icones";
+import { IconeEdicao, IconeDelete, IconeFile } from "./icones";
 export default function Despesas(props) {
   const [searchAll, setSearchAll] = useState("");
 
@@ -15,6 +15,11 @@ export default function Despesas(props) {
   function renderizarAcoes(despesas) {
     return (
       <td className=" flex py-2 justify-center text-center">
+        <Link href={`/comprovantes/${despesas.comprovante}`}>
+          <a className="flex justify-center items-center text-yellow-500 p-2 m-1">
+            {IconeFile}
+          </a>
+        </Link>
         <button
           onClick={() => props.despesaSelecionada?.(despesas)}
           className="flex justify-center items-center text-blue-600 p-2 m-1"
@@ -53,7 +58,7 @@ export default function Despesas(props) {
           className="mt-4 w-full px-8 py-1  font-thin border-gray-300 border-b focus:outline-none rounded-md"
         />
       </div>
-      <div className="mt-4 overflow-hidden">
+      <div className="mt-4 overflow-y-auto h-96">
         <table className=" w-full table-auto ">
           <thead>
             <tr className="bg-gray-200 text-gray-500 uppercase text-sm leading-normal">
@@ -98,7 +103,7 @@ export default function Despesas(props) {
                   </div>
                 </td>
                 <td className="">
-                  <div className="flex  ">
+                  <div className="flex ">
                     <div className=" py-2 pr-1 text-left whitespace-nowrap">
                       {despesas.fornecedor}
                     </div>

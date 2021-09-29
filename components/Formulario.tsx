@@ -12,6 +12,9 @@ export default function Formulario(props) {
 
   return (
     <div>
+      <div className="text-center text-lg font-medium ">
+        Cadastro de Receitas
+      </div>
       {id ? <Entrada exibir={true} valor={id} /> : false}
 
       <Entrada texto="Conta" valor={conta} valorMudou={setConta} />

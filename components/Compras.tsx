@@ -1,28 +1,28 @@
+import Link from "next/link";
 import { useState } from "react";
 
 import { IconeEdicao, IconeDelete } from "./icones";
 
-export default function Receitas(props) {
+export default function Compras(props) {
   const [searchAll, setSearchAll] = useState("");
 
-  const receitaFilter = props.receitas?.filter(
-    (receitas) =>
-      receitas.descricao.toLowerCase().includes(searchAll.toLowerCase()) ||
-      receitas.conta.toLowerCase().includes(searchAll.toLowerCase()) ||
-      receitas.valor.toString().includes(searchAll.toLowerCase())
-    // receitas.valor.includes(searchAll.toLowerCase())
+  const compraFilter = props.compras?.filter(
+    (compras) =>
+      compras.fornecedor.toLowerCase().includes(searchAll.toLowerCase()) ||
+      compras.nf.toString().includes(searchAll.toLowerCase()) ||
+      compras.valor.toString().includes(searchAll.toLowerCase())
   );
-  function renderizarAcoes(receitas) {
+  function renderizarAcoes(compras) {
     return (
       <td className=" flex py-2 justify-center text-center">
         <button
-          onClick={() => props.receitaSelecionada?.(receitas)}
+          onClick={() => props.compraSelecionada?.(compras)}
           className="flex justify-center items-center text-blue-600 p-2 m-1"
         >
           {IconeEdicao}
         </button>
         <button
-          onClick={() => props.receitaExcluida?.(receitas)}
+          onClick={() => props.compraExcluida?.(compras)}
           className="flex justify-center items-center text-red-600 p-2 m-1"
         >
           {IconeDelete}
@@ -53,36 +53,35 @@ export default function Receitas(props) {
           className="mt-4 w-full px-8 py-1  font-thin border-gray-300 border-b focus:outline-none rounded-md"
         />
       </div>
-      <div className="mt-4 overflow-y-auto h-96	">
-        <table className=" w-full table-auto  ">
+      <div className="mt-4 overflow-y-auto h-96">
+        <table className=" w-full table-auto ">
           <thead>
             <tr className="bg-gray-200 text-gray-500 uppercase text-sm leading-normal">
-              <th className="py-2 pl-1 text-left">Conta</th>
-              <th className="py-2 pl-1 text-left">Valor</th>
-              <th className="py-2 pl-1 text-left">Descrição</th>
-              <th className="py-2 pl-1 text-left">Loja</th>
-              <th className="py-2 px-2 text-left">Data</th>
-              <th className="py-2 px-2 text-center">Ações</th>
+              <th className="py-2  text-left">NF</th>
+              <th className="py-2  text-left">Valor</th>
+              <th className="py-2  text-left">Fornecedor</th>
+              <th className="py-2  text-left">Data</th>
+              <th className="py-2 pl-2 text-center">Ações</th>
             </tr>
           </thead>
 
           <tbody className="text-gray-600 text-sm font-light">
-            {receitaFilter?.map((receitas, indice) => (
+            {compraFilter.map((compras, indice) => (
               <tr
-                key={receitas._id}
+                key={compras._id}
                 className={`${indice % 2 != 0 ? "bg-gray-100" : "bg-white"}`}
               >
                 <td className="">
                   <div className="flex items-left ">
                     <div className=" py-2  pr-1 text-left whitespace-nowrap">
-                      {receitas.conta}
+                      {compras.nf}
                     </div>
                   </div>
                 </td>
                 <td className="">
                   <div className="flex items-left ">
                     <div className=" py-2 pr-1 text-left whitespace-nowrap">
-                      {receitas.valor.toLocaleString("pt-BR", {
+                      {compras.valor.toLocaleString("pt-BR", {
                         style: "currency",
                         currency: "BRL",
                       })}
@@ -92,27 +91,21 @@ export default function Receitas(props) {
                 <td className="">
                   <div className="flex items-left ">
                     <div className=" py-2 pr-1 text-left whitespace-nowrap">
-                      {receitas.descricao}
+                      {compras.fornecedor}
                     </div>
                   </div>
                 </td>
+
                 <td className="">
                   <div className="flex items-left ">
                     <div className=" py-2 pr-1 text-left whitespace-nowrap">
-                      {receitas.loja}
-                    </div>
-                  </div>
-                </td>
-                <td className="">
-                  <div className="flex items-left ">
-                    <div className=" py-2 pr-1 text-left whitespace-nowrap">
-                      {new Date(receitas.data).toLocaleDateString("pt-BR", {
+                      {new Date(compras.data).toLocaleDateString("pt-BR", {
                         timeZone: "UTC",
                       })}
                     </div>
                   </div>
                 </td>
-                {renderizarAcoes(receitas)}
+                <td>{renderizarAcoes(compras)}</td>
               </tr>
             ))}
           </tbody>

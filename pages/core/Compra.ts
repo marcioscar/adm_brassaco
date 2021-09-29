@@ -1,55 +1,44 @@
-export default class Despesa {
+export default class Compra {
   #id: string;
-  #conta: string;
+  #nf: number;
   #valor: number;
-  #descricao: string;
   #fornecedor: string;
-  #tipo: string;
   #data: Date;
 
   constructor(
-    conta: string,
     valor: number,
-    descricao: string,
+    nf: number,
     data: Date,
     fornecedor: string,
-    tipo: string,
     id: string = null
   ) {
-    this.#conta = conta;
+    this.#nf = nf;
     this.#valor = valor;
-    this.#descricao = descricao;
     this.#fornecedor = fornecedor;
-    this.#tipo = tipo;
     this.#data = data;
     this.#id = id;
   }
 
   static vazio() {
-    return new Despesa("", null, "", new Date(), "", "", "");
+    return new Compra(null, null, new Date(), "", "");
   }
 
   get id() {
     return this.#id;
   }
 
-  get conta() {
-    return this.#conta;
+  get nf() {
+    return this.#nf;
   }
 
   get valor() {
     return this.#valor;
   }
-  get descricao() {
-    return this.#descricao;
-  }
-  get forencedor() {
+
+  get fornecedor() {
     return this.#fornecedor;
   }
   get data() {
     return this.#data;
-  }
-  get tipo() {
-    return this.#tipo;
   }
 }
