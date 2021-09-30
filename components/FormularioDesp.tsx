@@ -21,7 +21,7 @@ export default function FormularioDesp(props) {
   const contanova = [
     { value: "Revenda", label: "Revenda" },
     { value: "Pessoal", label: "Pessoal" },
-    { value: "Comunicacao", label: "Comunicacao" },
+    { value: "Servicos", label: "Servicos" },
     { value: "Contador", label: "Contador" },
     { value: "Transporte", label: "Transporte" },
     { value: "Imposto", label: "Imposto" },

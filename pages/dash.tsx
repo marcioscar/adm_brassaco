@@ -25,8 +25,149 @@ export default function Dash() {
   const { data: receitas } = useSWR("/api/receitas", api);
   const { data: despesas } = useSWR("/api/despesas", api);
   const { data: compras } = useSWR("/api/compras", api);
+  const { data: estoque } = useSWR("/api/estoque", api);
 
   if (!receitas) return "Carregando...";
+  if (!despesas) return "Carregando...";
+  if (!compras) return "Carregando...";
+  if (!estoque) return "Carregando...";
+
+  const estoqueAtual = estoque.data.filter((estoque) =>
+    estoque.data.includes(
+      new Date().getFullYear() +
+        "-" +
+        String(new Date().getMonth() + 1).padStart(2, "0")
+    )
+  );
+  const estoqueAnterior = estoque.data.filter((estoque) =>
+    estoque.data.includes(
+      new Date().getFullYear() +
+        "-" +
+        String(new Date().getMonth()).padStart(2, "0")
+    )
+  );
+
+  const receitaTotal = receitas.data.filter((receitas) =>
+    receitas.data.includes(
+      new Date().getFullYear() +
+        "-" +
+        String(new Date().getMonth() + 1).padStart(2, "0")
+    )
+  );
+
+  const despesaTotal = despesas?.data.filter((despesas) =>
+    despesas.data.includes(
+      new Date().getFullYear() +
+        "-" +
+        String(new Date().getMonth() + 1).padStart(2, "0")
+    )
+  );
+  const compraTotal = compras?.data.filter((compras) =>
+    compras.data.includes(
+      new Date().getFullYear() +
+        "-" +
+        String(new Date().getMonth() + 1).padStart(2, "0")
+    )
+  );
+
+  const receitaFilterQI = receitas?.data.filter(
+    (receitas) =>
+      // receitas.loja.includes("QI") && receitas.data.includes("2021-08")
+      receitas.loja.includes("QI") &&
+      receitas.data.includes(
+        new Date().getFullYear() +
+          "-" +
+          String(new Date().getMonth() + 1).padStart(2, "0")
+      )
+  );
+
+  const receitaFilterQNE = receitas?.data.filter(
+    (receitas) =>
+      // receitas.loja.includes("QI") && receitas.data.includes("2021-08")
+      receitas.loja.includes("QNE") &&
+      receitas.data.includes(
+        new Date().getFullYear() +
+          "-" +
+          String(new Date().getMonth() + 1).padStart(2, "0")
+      )
+  );
+  const receitaFilterNRT = receitas?.data.filter(
+    (receitas) =>
+      // receitas.loja.includes("QI") && receitas.data.includes("2021-08")
+      receitas.loja.includes("NRT") &&
+      receitas.data.includes(
+        new Date().getFullYear() +
+          "-" +
+          String(new Date().getMonth() + 1).padStart(2, "0")
+      )
+  );
+  const receitaFilterSDS = receitas.data?.filter(
+    (receitas) =>
+      // receitas.loja.includes("QI") && receitas.data.includes("2021-08")
+      receitas.loja.includes("SDS") &&
+      receitas.data.includes(
+        new Date().getFullYear() +
+          "-" +
+          String(new Date().getMonth() + 1).padStart(2, "0")
+      )
+  );
+
+  const despesaFilterPessoal = despesas?.data.filter(
+    (despesas) =>
+      despesas.conta.includes("Pessoal") &&
+      despesas.data.includes(
+        new Date().getFullYear() +
+          "-" +
+          String(new Date().getMonth() + 1).padStart(2, "0")
+      )
+  );
+  const despesaFilterRevenda = despesas?.data.filter(
+    (despesas) =>
+      despesas.conta.includes("Revenda") &&
+      despesas.data.includes(
+        new Date().getFullYear() +
+          "-" +
+          String(new Date().getMonth() + 1).padStart(2, "0")
+      )
+  );
+  const despesaFilterImpostos = despesas?.data.filter(
+    (despesas) =>
+      despesas.conta.includes("Imposto") &&
+      despesas.data.includes(
+        new Date().getFullYear() +
+          "-" +
+          String(new Date().getMonth() + 1).padStart(2, "0")
+      )
+  );
+  const despesaFilterServicos = despesas?.data.filter(
+    (despesas) =>
+      despesas.conta.includes("Servicos") &&
+      despesas.data.includes(
+        new Date().getFullYear() +
+          "-" +
+          String(new Date().getMonth() + 1).padStart(2, "0")
+      )
+  );
+
+  const despesaFilterFixa = despesas?.data.filter(
+    (despesas) =>
+      despesas.tipo.includes("fixa") &&
+      despesas.data.includes(
+        new Date().getFullYear() +
+          "-" +
+          String(new Date().getMonth() + 1).padStart(2, "0")
+      )
+  );
+
+  function soma(rec?) {
+    let total = 0;
+    for (const receita of rec) {
+      total += receita.valor;
+    }
+    return total;
+  }
+
+  console.log(soma(estoqueAnterior));
 
   function receitaSelecionada(receitas) {
     SetReceita(receitas);
@@ -174,7 +315,6 @@ export default function Dash() {
                 <div className="grid grid-cols-12 gap-6 mt-5">
                   <button
                     className="transform  hover:scale-105 transition duration-300 shadow-xl rounded-lg col-span-12 sm:col-span-6 xl:col-span-3 intro-y bg-white"
-                    // onClick={changeTable}
                     onClick={function () {
                       settabelaNome("Receitas");
                       mutate("/api/receitas");
@@ -184,37 +324,52 @@ export default function Dash() {
                       <div className="flex justify-between">
                         <img className="w-8" src="receita.png" />
                         <div className="text-lg font-medium text-gray-700">
-                          Receita
+                          Receitas
                         </div>
 
                         <div className="bg-green-500 rounded-full h-6 px-2 flex justify-items-center text-white font-semibold text-sm">
                           <span className="flex items-center font-mono font-light">
-                            456.900,34
+                            {soma(receitaTotal).toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}
                           </span>
                         </div>
                       </div>
                       <div className="ml-2 flex justify-between">
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3 font-medium tracking-tighter leading-8">
-                            114.510,56
+                            {soma(receitaFilterQI).toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}
                           </div>
                           <div className=" text-base text-gray-600">QI</div>
                         </div>
                         <div className="flex flex-col justify-center  items-center">
                           <div className="mt-3 font-medium tracking-tighter leading-8">
-                            24.510,55
+                            {soma(receitaFilterQNE).toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}
                           </div>
                           <div className="text-base text-gray-600">QNE</div>
                         </div>
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3 font-medium  tracking-tighter leading-8">
-                            24.510,43
+                            {soma(receitaFilterNRT).toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}
                           </div>
                           <div className="text-base text-gray-600">NRT</div>
                         </div>
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3 font-medium tracking-tighter leading-8">
-                            24.510,23
+                            {soma(receitaFilterSDS).toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}
                           </div>
                           <div className=" text-base text-gray-600">SDS</div>
                         </div>
@@ -232,39 +387,72 @@ export default function Dash() {
                       <div className="flex justify-between">
                         <img className="w-8" src="despesas.png" />
                         <div className="text-lg font-medium text-gray-700">
-                          Despesa
+                          Despesas
                         </div>
 
                         <div className="bg-yellow-500 rounded-full h-6 px-2 flex justify-items-center text-white font-semibold text-sm">
                           <span className="flex items-center font-mono font-light">
-                            235.555,00
+                            {soma(despesaTotal).toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}
                           </span>
                         </div>
                       </div>
                       <div className="ml-2 flex justify-between">
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3 font-medium tracking-tighter leading-8">
-                            114.510
+                            {soma(despesaFilterPessoal).toLocaleString(
+                              "pt-BR",
+                              {
+                                style: "currency",
+                                currency: "BRL",
+                              }
+                            )}
                           </div>
-                          <div className=" text-base text-gray-600">QI</div>
+                          <div className=" text-base text-gray-600">
+                            Pessoal
+                          </div>
                         </div>
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3 font-medium tracking-tighter leading-8">
-                            24.510
+                            {soma(despesaFilterRevenda).toLocaleString(
+                              "pt-BR",
+                              {
+                                style: "currency",
+                                currency: "BRL",
+                              }
+                            )}
                           </div>
-                          <div className="text-base text-gray-600">QNE</div>
+                          <div className="text-base text-gray-600">Revenda</div>
                         </div>
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3  font-medium tracking-tighter leading-8">
-                            24.510
+                            {soma(despesaFilterImpostos).toLocaleString(
+                              "pt-BR",
+                              {
+                                style: "currency",
+                                currency: "BRL",
+                              }
+                            )}
                           </div>
-                          <div className="text-base text-gray-600">NRT</div>
+                          <div className="text-base text-gray-600">
+                            Impostos
+                          </div>
                         </div>
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3  font-medium tracking-tighter leading-8">
-                            24.510
+                            {soma(despesaFilterServicos).toLocaleString(
+                              "pt-BR",
+                              {
+                                style: "currency",
+                                currency: "BRL",
+                              }
+                            )}
                           </div>
-                          <div className=" text-base text-gray-600">SDS</div>
+                          <div className=" text-base text-gray-600">
+                            Serviços
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -285,34 +473,57 @@ export default function Dash() {
 
                         <div className="bg-blue-500 rounded-full h-6 px-2 flex justify-items-center text-white font-semibold text-sm">
                           <span className="flex items-center font-mono font-light">
-                            145.545,50
+                            {soma(compraTotal).toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}
                           </span>
                         </div>
                       </div>
                       <div className="ml-2 flex justify-between">
                         <div className="flex flex-col justify-center items-center">
-                          <div className="mt-3 font-medium tracking-tighter leading-8">
-                            114.4
+                          <div className="mt-3 text-sm tracking-tighter leading-8">
+                            {soma(estoqueAtual).toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}
                           </div>
-                          <div className=" text-base text-gray-600">QI</div>
+                          <div className=" text-sm text-gray-600">
+                            Estoque Atual
+                          </div>
                         </div>
                         <div className="flex flex-col justify-center items-center">
-                          <div className="mt-3 font-medium tracking-tighter leading-8">
-                            24.510
+                          <div className="mt-3 text-sm tracking-tighter leading-8">
+                            {soma(estoqueAnterior).toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}
                           </div>
-                          <div className="text-base text-gray-600">QNE</div>
+                          <div className="text-sm text-gray-600">
+                            Estoque Anterior
+                          </div>
                         </div>
                         <div className="flex flex-col justify-center items-center">
-                          <div className="mt-3  font-medium tracking-tighter leading-8">
-                            24.510
+                          <div className="mt-3 text-sm tracking-tighter leading-8">
+                            {(
+                              soma(estoqueAnterior) +
+                              soma(compraTotal) -
+                              soma(estoqueAtual)
+                            ).toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}
                           </div>
-                          <div className="text-base text-gray-600">NRT</div>
+                          <div className="text-sm text-gray-600">CMV</div>
                         </div>
                         <div className="flex flex-col justify-center items-center">
-                          <div className="mt-3  font-medium tracking-tighter leading-8">
-                            24.510
+                          <div className="mt-3  text-sm tracking-tighter leading-8">
+                            {soma(despesaFilterFixa).toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}
                           </div>
-                          <div className=" text-base text-gray-600">SDS</div>
+                          <div className=" text-sm text-gray-600">CF</div>
                         </div>
                       </div>
                     </div>
