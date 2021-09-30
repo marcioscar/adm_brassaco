@@ -14,7 +14,7 @@ const handler = async (req, res) => {
       descricao,
       fornecedor,
       tipo,
-      data_desp,
+
       id,
       comprovante,
     } = req.body;
@@ -46,7 +46,7 @@ const handler = async (req, res) => {
                 descricao: descricao,
                 fornecedor: fornecedor,
                 tipo: tipo,
-                data: new Date(data_desp),
+                data: new Date(),
                 comprovante: comprovante,
               },
             },

@@ -9,7 +9,7 @@ const handler = async (req, res) => {
     const { db } = await connectToDatabase();
     const { method } = req;
 
-    const { conta, valor, descricao, loja, data_rec, id } = req.body;
+    const { conta, valor, descricao, loja, id } = req.body;
 
     switch (method) {
       case "GET":
@@ -38,7 +38,7 @@ const handler = async (req, res) => {
                 descricao: descricao,
                 loja: loja,
                 //data: new Date(),
-                data: new Date(data_rec),
+                data: new Date(),
               },
             },
           ],

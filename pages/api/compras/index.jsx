@@ -37,7 +37,7 @@ const handler = async (req, res) => {
                 valor: valor,
                 fornecedor: fornecedor,
                 nf: nf,
-                data: new Date(data_compra),
+                data: new Date(),
               },
             },
           ],

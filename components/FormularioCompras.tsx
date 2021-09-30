@@ -76,13 +76,13 @@ export default function FormularioCompras(props) {
         }}
         enableReinitialize={true}
         onSubmit={onSubmit}
-        validate={(values) => {
-          let errors = {};
-          if (!values.nf) {
-            errors.nf = "Preencha a NF";
-          }
-          return errors;
-        }}
+        // validate={(values) => {
+        //   let errors = {};
+        //   if (!values.nf) {
+        //     errors.nf = "Preencha a NF";
+        //   }
+        //   return errors;
+        // }}
       >
         <Form className="px-8 pt-6 pb-8 mb-4 bg-white rounded">
           <div className="md:flex flex-row md:space-x-4 w-full text-xs">
