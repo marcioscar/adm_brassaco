@@ -2,6 +2,7 @@
 import useSWR, { useSWRConfig } from "swr";
 import api from "../utils/api";
 import Select from "react-select";
+import NumberFormat from "react-number-format";
 
 export default function Entrada(props) {
   return (
@@ -36,6 +37,27 @@ export function Loja(props) {
         <option value="QNE">QNE</option>
         <option value="SDS">SDS</option>
         <option value="NRT">NRT</option>
+      </select>
+    </div>
+  );
+}
+export function ContaRec(props) {
+  return (
+    <div className="flex flex-col">
+      <label className="mb-2">{props.texto}</label>
+
+      <select
+        className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
+        value={props.valor}
+        onChange={(e) => props.valorMudou?.(e.target.value)}
+      >
+        <option hidden={true} value="">
+          Selecione:
+        </option>
+        <option value="Dinheiro">Dinheiro</option>
+        <option value="Cartao">Cartão</option>
+        <option value="Boleto">Boleto</option>
+        <option value="Transferencia">Transferência</option>
       </select>
     </div>
   );
@@ -151,20 +173,6 @@ export function FornecedorNovo(props) {
     </div>
   );
 }
-
-// export function Dinheiro(props) {
-//   return (
-//     <div className="flex flex-col">
-//       <label className="mb-2">{props.texto}</label>
-//       <CurrencyInput
-//         value={props.valor}
-//         type={props.tipo ?? "text"}
-//         onChange={(e) => props.valorMudou?.(e.target.value)}
-//         className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
-//       />
-//     </div>
-//   );
-// }
 
 // export function ValorMask(props) {
 //   return (

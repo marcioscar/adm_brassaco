@@ -7,9 +7,6 @@ import Botao from "../components/Botao";
 import Formulario from "../components/Formulario";
 import useSWR, { useSWRConfig } from "swr";
 import api from "../utils/api";
-// import Receita from "./core/Receita";
-// import Despesa from "./core/Despesa";
-// import Compra from "./core/Compra";
 import FormularioDesp from "../components/FormularioDesp";
 import Compras from "../components/Compras";
 import FormularioCompras from "../components/FormularioCompras";
@@ -17,11 +14,8 @@ import FormularioCompras from "../components/FormularioCompras";
 export default function Home() {
   const [tabelaNome, settabelaNome] = useState("Receitas");
   const [visivel, setVisivel] = useState<"tabela" | "form">("tabela");
-  // const [receita, SetReceita] = useState<Receita>(Receita.vazio());
   const [receita, SetReceita] = useState({});
-  // const [despesa, SetDespesa] = useState<Despesa>(Despesa.vazio());
   const [despesa, SetDespesa] = useState({});
-  // const [compra, SetCompra] = useState<Compra>(Compra.vazio());
   const [compra, SetCompra] = useState({});
 
   const { mutate } = useSWRConfig();
@@ -342,37 +336,33 @@ export default function Home() {
                       <div className="ml-2 flex justify-between">
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3 font-medium tracking-tighter leading-8">
-                            {soma(receitaFilterQI).toLocaleString("pt-BR", {
-                              style: "currency",
-                              currency: "BRL",
-                            })}
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(soma(receitaFilterQI))}
                           </div>
                           <div className=" text-base text-gray-600">QI</div>
                         </div>
                         <div className="flex flex-col justify-center  items-center">
                           <div className="mt-3 font-medium tracking-tighter leading-8">
-                            {soma(receitaFilterQNE).toLocaleString("pt-BR", {
-                              style: "currency",
-                              currency: "BRL",
-                            })}
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(soma(receitaFilterQNE))}
                           </div>
                           <div className="text-base text-gray-600">QNE</div>
                         </div>
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3 font-medium  tracking-tighter leading-8">
-                            {soma(receitaFilterNRT).toLocaleString("pt-BR", {
-                              style: "currency",
-                              currency: "BRL",
-                            })}
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(soma(receitaFilterNRT))}
                           </div>
                           <div className="text-base text-gray-600">NRT</div>
                         </div>
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3 font-medium tracking-tighter leading-8">
-                            {soma(receitaFilterSDS).toLocaleString("pt-BR", {
-                              style: "currency",
-                              currency: "BRL",
-                            })}
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(soma(receitaFilterSDS))}
                           </div>
                           <div className=" text-base text-gray-600">SDS</div>
                         </div>
@@ -405,13 +395,9 @@ export default function Home() {
                       <div className="ml-2 flex justify-between">
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3 font-medium tracking-tighter leading-8">
-                            {soma(despesaFilterPessoal).toLocaleString(
-                              "pt-BR",
-                              {
-                                style: "currency",
-                                currency: "BRL",
-                              }
-                            )}
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(soma(despesaFilterPessoal))}
                           </div>
                           <div className=" text-base text-gray-600">
                             Pessoal
@@ -419,25 +405,17 @@ export default function Home() {
                         </div>
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3 font-medium tracking-tighter leading-8">
-                            {soma(despesaFilterRevenda).toLocaleString(
-                              "pt-BR",
-                              {
-                                style: "currency",
-                                currency: "BRL",
-                              }
-                            )}
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(soma(despesaFilterRevenda))}
                           </div>
                           <div className="text-base text-gray-600">Revenda</div>
                         </div>
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3  font-medium tracking-tighter leading-8">
-                            {soma(despesaFilterImpostos).toLocaleString(
-                              "pt-BR",
-                              {
-                                style: "currency",
-                                currency: "BRL",
-                              }
-                            )}
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(soma(despesaFilterImpostos))}
                           </div>
                           <div className="text-base text-gray-600">
                             Impostos
@@ -445,13 +423,9 @@ export default function Home() {
                         </div>
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3  font-medium tracking-tighter leading-8">
-                            {soma(despesaFilterServicos).toLocaleString(
-                              "pt-BR",
-                              {
-                                style: "currency",
-                                currency: "BRL",
-                              }
-                            )}
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(soma(despesaFilterServicos))}
                           </div>
                           <div className=" text-base text-gray-600">
                             Serviços
@@ -476,10 +450,9 @@ export default function Home() {
 
                         <div className="bg-blue-500 rounded-full h-6 px-2 flex justify-items-center text-white font-semibold text-sm">
                           <span className="flex items-center font-mono font-light">
-                            {soma(compraTotal).toLocaleString("pt-BR", {
-                              style: "currency",
-                              currency: "BRL",
-                            })}
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(soma(compraTotal))}
                           </span>
                         </div>
                       </div>

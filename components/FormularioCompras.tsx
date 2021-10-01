@@ -1,10 +1,10 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, useField, ErrorMessage } from "formik";
 
 import Botao from "./Botao";
 import useSWR, { useSWRConfig } from "swr";
 import api from "../utils/api";
 import { useState } from "react";
-import { Fornecedor } from "./Entrada";
+import NumberFormat from "react-number-format";
 
 export default function FormularioCompras(props) {
   const id = props.compra?._id;
@@ -12,6 +12,26 @@ export default function FormularioCompras(props) {
   const [nome, setNome] = useState("");
 
   const { mutate } = useSWRConfig();
+
+  function MoneyInput(props) {
+    const { name } = props;
+    const [field] = useField(name);
+    let floatValue = 0;
+
+    return (
+      <NumberFormat
+        className="border bg-gray-100 py-2 px-4 w-96 outline-none focus:ring-2 focus:ring-indigo-400 rounded"
+        {...field}
+        decimalSeparator=","
+        thousandSeparator="."
+        displayType="input"
+        type="text"
+        decimalScale={2}
+        allowNegative={false}
+      />
+    );
+  }
+
   function campoFornecedor() {
     setAdicionar(true);
   }
@@ -48,9 +68,13 @@ export default function FormularioCompras(props) {
     );
 
   const onSubmit = async (values, submitProps) => {
-    console.log("Dados", JSON.stringify(values));
     props.compraMudou?.({
-      valor: values.valor,
+      // valor: parseFloat(values.valor.replace(/\,/g, ".")),
+
+      valor: parseFloat(
+        values.valor.toString().replace(/\./g, "").replace(",", ".")
+      ),
+      // valor: values.valor,
       nf: values.nf,
       fornecedor: values.fornecedor,
       id: values.id,
@@ -113,13 +137,23 @@ export default function FormularioCompras(props) {
               >
                 Valor
               </label>
-              <Field
-                type="number"
+
+              <MoneyInput name="valor" id="valor" />
+
+              {/* <Field
+                type="float"
                 id="valor"
                 name="valor"
                 className="border bg-gray-100 py-2 px-4 w-96 outline-none focus:ring-2 focus:ring-indigo-400 rounded"
                 placeholder="Valor R$"
-              />
+              /> */}
+              {/* <Field
+                type="float"
+                id="valor"
+                name="valor"
+                className="border bg-gray-100 py-2 px-4 w-96 outline-none focus:ring-2 focus:ring-indigo-400 rounded"
+                placeholder="Valor R$"
+              /> */}
               <ErrorMessage
                 className=" text-red-500"
                 name="valor"

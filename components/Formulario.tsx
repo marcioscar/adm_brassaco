@@ -1,4 +1,4 @@
-import Entrada, { Loja } from "./Entrada";
+import Entrada, { Loja, ContaRec } from "./Entrada";
 import { useState } from "react";
 import Botao from "./Botao";
 
@@ -17,7 +17,7 @@ export default function Formulario(props) {
       </div>
       {id ? <Entrada exibir={true} valor={id} /> : false}
 
-      <Entrada texto="Conta" valor={conta} valorMudou={setConta} />
+      <ContaRec texto="Conta" valor={conta} valorMudou={setConta} />
       <Entrada
         texto="Valor"
         valor={valor}
