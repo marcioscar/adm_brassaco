@@ -459,10 +459,9 @@ export default function Home() {
                       <div className="ml-2 flex justify-between">
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3 text-sm tracking-tighter leading-8">
-                            {soma(estoqueAtual).toLocaleString("pt-BR", {
-                              style: "currency",
-                              currency: "BRL",
-                            })}
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(soma(estoqueAtual))}
                           </div>
                           <div className=" text-sm text-gray-600">
                             Estoque Atual
@@ -470,10 +469,9 @@ export default function Home() {
                         </div>
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3 text-sm tracking-tighter leading-8">
-                            {soma(estoqueAnterior).toLocaleString("pt-BR", {
-                              style: "currency",
-                              currency: "BRL",
-                            })}
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(soma(estoqueAnterior))}
                           </div>
                           <div className="text-sm text-gray-600">
                             Estoque Anterior
@@ -481,23 +479,21 @@ export default function Home() {
                         </div>
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3 text-sm tracking-tighter leading-8">
-                            {(
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(
                               soma(estoqueAnterior) +
-                              soma(compraTotal) -
-                              soma(estoqueAtual)
-                            ).toLocaleString("pt-BR", {
-                              style: "currency",
-                              currency: "BRL",
-                            })}
+                                soma(compraTotal) -
+                                soma(estoqueAtual)
+                            )}
                           </div>
                           <div className="text-sm text-gray-600">CMV</div>
                         </div>
                         <div className="flex flex-col justify-center items-center">
                           <div className="mt-3  text-sm tracking-tighter leading-8">
-                            {soma(despesaFilterFixa).toLocaleString("pt-BR", {
-                              style: "currency",
-                              currency: "BRL",
-                            })}
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(soma(despesaFilterFixa))}
                           </div>
                           <div className=" text-sm text-gray-600">CF</div>
                         </div>
