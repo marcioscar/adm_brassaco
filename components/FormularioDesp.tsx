@@ -83,7 +83,7 @@ export default function FormularioDesp(props) {
       {id ? (
         <div>
           <Select
-            className="mb-3"
+            className="mb-3 rounded border-2 border-gray-200 text-gray-600 h-8 w-60 pl-5 pr-10 bg-gray-100 hover:border-gray-400 focus:outline-none appearance-none"
             placeholder="Selecione a conta:"
             options={contanova}
             isSearchable={true}
@@ -95,7 +95,7 @@ export default function FormularioDesp(props) {
       ) : (
         <div>
           <Select
-            className="mb-3"
+            className="mb-3 "
             placeholder="Selecione a conta:"
             options={contanova}
             isSearchable={true}

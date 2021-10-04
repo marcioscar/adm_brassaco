@@ -174,7 +174,7 @@ export default function FormularioCompras(props) {
                 type="text"
                 id="fornecedor"
                 name="fornecedor"
-                className="border bg-gray-100 py-2 px-4 w-96 outline-none focus:ring-2 focus:ring-indigo-400 rounded"
+                className="rounded border-2 border-gray-200 text-gray-600 h-8 w-60 pl-5 pr-10 bg-gray-100 hover:border-gray-400 focus:outline-none appearance-none"
                 placeholder="Fornecedor"
               >
                 <option hidden value="">

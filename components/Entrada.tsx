@@ -9,7 +9,7 @@ export default function Entrada(props) {
     <div className="flex flex-col">
       <label className="mb-2">{props.texto}</label>
       <input
-        className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
+        className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
         type={props.tipo ?? "text"}
         readOnly={props.read}
         value={props.valor}
@@ -26,7 +26,7 @@ export function Loja(props) {
       <label className="mb-2">{props.texto}</label>
 
       <select
-        className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
+        className="rounded border-2 border-gray-200 text-gray-600 h-8 w-60 pl-5 pr-10 bg-gray-100 hover:border-gray-400 focus:outline-none appearance-none"
         value={props.valor}
         onChange={(e) => props.valorMudou?.(e.target.value)}
       >
@@ -47,7 +47,7 @@ export function ContaRec(props) {
       <label className="mb-2">{props.texto}</label>
 
       <select
-        className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
+        className="rounded border-2 border-gray-200 text-gray-600 h-8 w-60 pl-5 pr-10 bg-gray-100 hover:border-gray-400 focus:outline-none appearance-none"
         value={props.valor}
         onChange={(e) => props.valorMudou?.(e.target.value)}
       >
@@ -68,7 +68,7 @@ export function Conta(props) {
       <label className="mb-2">{props.texto}</label>
 
       <select
-        className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
+        className="rounded border-2 border-gray-200 text-gray-600 h-8 w-60 pl-5 pr-10 bg-gray-100 hover:border-gray-400 focus:outline-none appearance-none"
         value={props.valor}
         onChange={(e) => props.valorMudou?.(e.target.value)}
       >
@@ -94,7 +94,7 @@ export function Tipo(props) {
       <label className="mb-2">{props.texto}</label>
 
       <select
-        className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
+        className="rounded border-2 border-gray-200 text-gray-600 h-8 w-60 pl-5 pr-10 bg-gray-100 hover:border-gray-400 focus:outline-none appearance-none"
         value={props.valor}
         onChange={(e) => props.valorMudou?.(e.target.value)}
       >
@@ -126,7 +126,7 @@ export function Fornecedor(props) {
     <div className="flex flex-col">
       <label className="mb-2">{props.texto}</label>
       <select
-        className="px-4 py-2 w-64 rounded-lg border border-gray-300 focus:outline-none focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
+        className="rounded border-2 border-gray-200 text-gray-600 h-8 w-60 pl-5 pr-10 bg-gray-100 hover:border-gray-400 focus:outline-none appearance-none"
         value={props.valor}
         onChange={(e) => props.valorMudou?.(e.target.value)}
       >
