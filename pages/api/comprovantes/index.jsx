@@ -4,7 +4,8 @@ const d = new Date().toLocaleDateString("de-DE");
 
 const upload = multer({
   storage: multer.diskStorage({
-    destination: "./public/comprovantes",
+    // destination: "./public/comprovantes",
+    destination: "/home/pi/comprovantes",
 
     filename: (req, file, cb) => cb(null, d + "-" + file.originalname),
   }),
