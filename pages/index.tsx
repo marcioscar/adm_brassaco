@@ -9,6 +9,7 @@ import useSWR, { useSWRConfig } from "swr";
 import api from "../utils/api";
 import FormularioDesp from "../components/FormularioDesp";
 import Compras from "../components/Compras";
+import Dre from "../components/Dre";
 import FormularioCompras from "../components/FormularioCompras";
 
 export default function Home() {
@@ -17,6 +18,9 @@ export default function Home() {
   const [receita, SetReceita] = useState({});
   const [despesa, SetDespesa] = useState({});
   const [compra, SetCompra] = useState({});
+  const [mes, SetMes] = useState(
+    String(new Date().getMonth() + 1).padStart(2, "0")
+  );
 
   const { mutate } = useSWRConfig();
   const { data: receitas } = useSWR("/api/receitas", api);
@@ -31,39 +35,34 @@ export default function Home() {
 
   const estoqueAtual = estoque.data.filter((estoque) =>
     estoque.data.includes(
-      new Date().getFullYear() +
-        "-" +
-        String(new Date().getMonth() + 1).padStart(2, "0")
+      new Date().getFullYear() + "-" + mes
+      // String(new Date().getMonth() + 1).padStart(2, "0")
     )
   );
   const estoqueAnterior = estoque.data.filter((estoque) =>
     estoque.data.includes(
-      new Date().getFullYear() +
-        "-" +
-        String(new Date().getMonth()).padStart(2, "0")
+      new Date().getFullYear() + "-" + mes
+      // String(new Date().getMonth()).padStart(2, "0")
     )
   );
 
   const receitaTotal = receitas.data.filter((receitas) =>
     receitas.data.includes(
-      new Date().getFullYear() +
-        "-" +
-        String(new Date().getMonth() + 1).padStart(2, "0")
+      new Date().getFullYear() + "-" + mes
+      // String(new Date().getMonth() + 1).padStart(2, "0")
     )
   );
 
   const despesaTotal = despesas?.data.filter((despesas) =>
     despesas.data.includes(
-      new Date().getFullYear() +
-        "-" +
-        String(new Date().getMonth() + 1).padStart(2, "0")
+      new Date().getFullYear() + "-" + mes
+      // String(new Date().getMonth() + 1).padStart(2, "0")
     )
   );
   const compraTotal = compras?.data.filter((compras) =>
     compras.data.includes(
-      new Date().getFullYear() +
-        "-" +
-        String(new Date().getMonth() + 1).padStart(2, "0")
+      new Date().getFullYear() + "-" + mes
+      // String(new Date().getMonth() + 1).padStart(2, "0")
     )
   );
 
@@ -72,9 +71,8 @@ export default function Home() {
       // receitas.loja.includes("QI") && receitas.data.includes("2021-08")
       receitas.loja.includes("QI") &&
       receitas.data.includes(
-        new Date().getFullYear() +
-          "-" +
-          String(new Date().getMonth() + 1).padStart(2, "0")
+        new Date().getFullYear() + "-" + mes
+        // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
 
@@ -83,9 +81,8 @@ export default function Home() {
       // receitas.loja.includes("QI") && receitas.data.includes("2021-08")
       receitas.loja.includes("QNE") &&
       receitas.data.includes(
-        new Date().getFullYear() +
-          "-" +
-          String(new Date().getMonth() + 1).padStart(2, "0")
+        new Date().getFullYear() + "-" + mes
+        // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
   const receitaFilterNRT = receitas?.data.filter(
@@ -93,9 +90,8 @@ export default function Home() {
       // receitas.loja.includes("QI") && receitas.data.includes("2021-08")
       receitas.loja.includes("NRT") &&
       receitas.data.includes(
-        new Date().getFullYear() +
-          "-" +
-          String(new Date().getMonth() + 1).padStart(2, "0")
+        new Date().getFullYear() + "-" + mes
+        // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
   const receitaFilterSDS = receitas.data?.filter(
@@ -103,9 +99,8 @@ export default function Home() {
       // receitas.loja.includes("QI") && receitas.data.includes("2021-08")
       receitas.loja.includes("SDS") &&
       receitas.data.includes(
-        new Date().getFullYear() +
-          "-" +
-          String(new Date().getMonth() + 1).padStart(2, "0")
+        new Date().getFullYear() + "-" + mes
+        // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
 
@@ -113,36 +108,32 @@ export default function Home() {
     (despesas) =>
       despesas.conta.includes("Pessoal") &&
       despesas.data.includes(
-        new Date().getFullYear() +
-          "-" +
-          String(new Date().getMonth() + 1).padStart(2, "0")
+        new Date().getFullYear() + "-" + mes
+        // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
   const despesaFilterRevenda = despesas?.data.filter(
     (despesas) =>
       despesas.conta.includes("Revenda") &&
       despesas.data.includes(
-        new Date().getFullYear() +
-          "-" +
-          String(new Date().getMonth() + 1).padStart(2, "0")
+        new Date().getFullYear() + "-" + mes
+        // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
   const despesaFilterImpostos = despesas?.data.filter(
     (despesas) =>
       despesas.conta.includes("Imposto") &&
       despesas.data.includes(
-        new Date().getFullYear() +
-          "-" +
-          String(new Date().getMonth() + 1).padStart(2, "0")
+        new Date().getFullYear() + "-" + mes
+        // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
   const despesaFilterServicos = despesas?.data.filter(
     (despesas) =>
       despesas.conta.includes("Servicos") &&
       despesas.data.includes(
-        new Date().getFullYear() +
-          "-" +
-          String(new Date().getMonth() + 1).padStart(2, "0")
+        new Date().getFullYear() + "-" + mes
+        // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
 
@@ -150,9 +141,8 @@ export default function Home() {
     (despesas) =>
       despesas.tipo.includes("fixa") &&
       despesas.data.includes(
-        new Date().getFullYear() +
-          "-" +
-          String(new Date().getMonth() + 1).padStart(2, "0")
+        new Date().getFullYear() + "-" + mes
+        // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
 
@@ -306,9 +296,36 @@ export default function Home() {
           <div className="grid grid-cols-12 gap-6">
             <div className="grid grid-cols-12 col-span-12 gap-6 xxl:col-span-9">
               <div className="col-span-12 mt-8">
-                <div className="flex items-center h-10 mb-4 ">
-                  <Image width={200} src={logo} alt="Logo Brassaco" />
+                <div className="flex justify-between	 items-center  h-10 mb-4 ">
+                  <div>
+                    <Image width={200} src={logo} alt="Logo Brassaco" />
+                  </div>
+                  <div>
+                    <label className="mr-2 font-medium">Mês selecionado:</label>
+                    <select
+                      className="rounded text-blue-600 h-8 w-60 pl-5 pr-10 hover:border-gray-400 focus:outline-none appearance-none"
+                      value={mes}
+                      onChange={(e) => SetMes(e.target.value)}
+                    >
+                      <option hidden={true} value="">
+                        Selecione o Mês:
+                      </option>
+                      <option value="01">Janeiro</option>
+                      <option value="02">Fevereiro</option>
+                      <option value="03">Março</option>
+                      <option value="04">Abril</option>
+                      <option value="05">Maio</option>
+                      <option value="06">Junho</option>
+                      <option value="07">Julho</option>
+                      <option value="08">Agosto</option>
+                      <option value="09">Setembro</option>
+                      <option value="10">Outubro</option>
+                      <option value="11">Novembro</option>
+                      <option value="12">Dezembro</option>
+                    </select>
+                  </div>
                 </div>
+
                 <div className="grid grid-cols-12 gap-6 mt-5">
                   <button
                     className="transform  hover:scale-105 transition duration-300 shadow-xl rounded-lg col-span-12 sm:col-span-6 xl:col-span-3 intro-y bg-white"
@@ -500,43 +517,87 @@ export default function Home() {
                       </div>
                     </div>
                   </button>
-                  <a
+                  <button
                     className="transform  hover:scale-105 transition duration-300 shadow-xl rounded-lg col-span-12 sm:col-span-6 xl:col-span-3 intro-y bg-white"
-                    href="#"
+                    onClick={function () {
+                      settabelaNome("Dre");
+                      // mutate("/api/compras");
+                    }}
                   >
                     <div className="p-5">
                       <div className="flex justify-between">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-7 w-7 text-green-400"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
-                          />
-                        </svg>
-                        <div className="bg-blue-500 rounded-full h-6 px-2 flex justify-items-center text-white font-semibold text-sm">
-                          <span className="flex items-center">30%</span>
+                        <img className="w-8" src="indice.png" />
+                        <div className="text-lg font-medium text-gray-700">
+                          Resultado
+                        </div>
+
+                        <div className="bg-purple-500 rounded-full h-6 px-2 flex justify-items-center text-white font-semibold text-sm">
+                          <span className="flex items-center font-mono font-light">
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(
+                              soma(receitaTotal) -
+                                (soma(estoqueAnterior) +
+                                  soma(compraTotal) -
+                                  soma(estoqueAtual)) -
+                                soma(despesaFilterFixa)
+                            )}
+                          </span>
                         </div>
                       </div>
-                      <div className="ml-2 w-full flex-1">
-                        <div>
-                          <div className="mt-3 text-3xl font-bold leading-8">
-                            4.510
+                      <div className="ml-2 flex justify-between">
+                        <div className="flex flex-col justify-center items-center">
+                          <div className="mt-3 text-sm tracking-tighter leading-8">
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(
+                              soma(receitaTotal) -
+                                (soma(estoqueAnterior) +
+                                  soma(compraTotal) -
+                                  soma(estoqueAtual))
+                            )}
                           </div>
-
-                          <div className="mt-1 text-base text-gray-600">
-                            Item Sales
+                          <div className=" text-sm text-gray-600">M C</div>
+                        </div>
+                        <div className="flex flex-col justify-center items-center">
+                          <div className="mt-3 text-sm tracking-tighter leading-8">
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(
+                              soma(receitaTotal) - soma(despesaFilterRevenda)
+                            )}
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            M C financeiro
+                          </div>
+                        </div>
+                        <div className="flex flex-col justify-center items-center">
+                          <div className="mt-3 text-sm tracking-tighter leading-8">
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(soma(despesaFilterRevenda))}
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            CMV Financeiro
+                          </div>
+                        </div>
+                        <div className="flex flex-col justify-center items-center">
+                          <div className="mt-3  text-sm tracking-tighter leading-8">
+                            {new Intl.NumberFormat("pt-BR", {
+                              minimumFractionDigits: 2,
+                            }).format(
+                              soma(receitaTotal) -
+                                soma(despesaFilterRevenda) -
+                                soma(despesaFilterFixa)
+                            )}
+                          </div>
+                          <div className=" text-sm text-gray-600">
+                            Financeiro
                           </div>
                         </div>
                       </div>
                     </div>
-                  </a>
+                  </button>
                 </div>
               </div>
 
@@ -565,7 +626,7 @@ export default function Home() {
                             )}
                           </div>
                         </div>
-                        {/* {unreadMessages.length > 0 && */}
+
                         {tabelaNome === "Receitas" && (
                           <div className="mt-4">
                             <div className="flex flex-col">
@@ -609,6 +670,23 @@ export default function Home() {
                                     compras={compras.data}
                                     compraSelecionada={compraSelecionada}
                                     compraExcluida={compraExcluida}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                        {tabelaNome === "Dre" && (
+                          <div className="mt-4">
+                            <div className="flex flex-col">
+                              <div className="-my-2 overflow-x-auto">
+                                <div className="py-2 align-middle inline-block min-w-full">
+                                  <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg bg-white"></div>
+                                  <Dre
+                                    receita={soma(receitaTotal)}
+                                    estoque={soma(estoqueAnterior)}
+                                    compra={soma(compraTotal)}
+                                    estatual={soma(estoqueAtual)}
                                   />
                                 </div>
                               </div>

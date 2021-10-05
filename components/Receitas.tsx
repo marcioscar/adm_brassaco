@@ -54,7 +54,7 @@ export default function Receitas(props) {
         />
       </div>
       <div className="mt-4 overflow-y-auto h-96	">
-        <table className=" w-full table-auto  ">
+        <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-200 text-gray-500 uppercase text-sm leading-normal">
               <th className="py-2 pl-1 text-left">Conta</th>
