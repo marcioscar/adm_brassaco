@@ -8,6 +8,7 @@ import Formulario from "../components/Formulario";
 import useSWR, { useSWRConfig } from "swr";
 import api from "../utils/api";
 import FormularioDesp from "../components/FormularioDesp";
+import FormDespesa from "../components/FormDespesa";
 import Compras from "../components/Compras";
 import Dre from "../components/Dre";
 import FormularioCompras from "../components/FormularioCompras";
@@ -253,23 +254,47 @@ export default function Home() {
     mutate("/api/receitas");
     setVisivel("tabela");
   };
+  const salvarDespesa = async (values) => {
+    let data = new FormData();
+    data.append("file", values.file);
+    data.append("id", values.id);
+    data.append("conta", values.conta);
+    data.append("valor", values.valor);
+    data.append("descricao", values.descricao);
+    data.append("fornecedor", values.fornecedor);
+    data.append("tipo", values.tipo);
+    data.append("data", values.data);
 
-  const salvarDespesa = async (Despesa) => {
-    await fetch(
-      "/api/despesas",
-
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        body: JSON.stringify(Despesa),
-      }
-    );
+    await fetch("/api/comprovantes/s3", {
+      method: "post",
+      headers: new Headers({
+        Accept: "application/json",
+      }),
+      body: data,
+    })
+      .then((response) => response.json())
+      .catch((error) => console.log(error));
     mutate("/api/despesas");
     setVisivel("tabela");
   };
+  // mutate("/api/despesas");
+  // setVisivel("tabela");
+  // const salvarDespesa = async (Despesa) => {
+  //   await fetch(
+  //     "/api/despesas",
+
+  //     {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+
+  //       body: JSON.stringify(Despesa),
+  //     }
+  //   );
+  //   mutate("/api/despesas");
+  //   setVisivel("tabela");
+  // };
   const salvarCompra = async (Compras) => {
     console.log(Compras);
 
@@ -687,6 +712,8 @@ export default function Home() {
                                     estoque={soma(estoqueAnterior)}
                                     compra={soma(compraTotal)}
                                     estatual={soma(estoqueAtual)}
+                                    fixo={soma(despesaFilterFixa)}
+                                    cmvfin={soma(despesaFilterRevenda)}
                                   />
                                 </div>
                               </div>
@@ -704,7 +731,7 @@ export default function Home() {
                           />
                         )}
                         {tabelaNome === "Despesas" && (
-                          <FormularioDesp
+                          <FormDespesa
                             despesa={despesa}
                             despesaMudou={salvarDespesa}
                             cancelado={() => setVisivel("tabela")}

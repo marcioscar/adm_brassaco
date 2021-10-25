@@ -10,7 +10,7 @@ const handler = async (req, res) => {
     const { method } = req;
     const { nf, valor, fornecedor, data_compra, id } = req.body;
     const valores = req.body;
-    console.log(valores.values);
+    console.log(id);
     switch (method) {
       case "GET":
         //buscar no mongodb
@@ -20,7 +20,7 @@ const handler = async (req, res) => {
         const data = await db
           .collection("compras")
           .find()
-          .limit(100)
+          // .limit(100)
           .sort({ data: -1 })
           .toArray();
 

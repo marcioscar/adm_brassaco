@@ -14,7 +14,7 @@ const handler = async (req, res) => {
         const data = await db
           .collection("estoque")
           .find()
-          .limit(100)
+          // .limit(100)
           .sort({ data: -1 })
           .toArray();
 

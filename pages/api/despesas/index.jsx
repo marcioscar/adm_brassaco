@@ -8,16 +8,8 @@ const handler = async (req, res) => {
   try {
     const { db } = await connectToDatabase();
     const { method } = req;
-    const {
-      conta,
-      valor,
-      descricao,
-      fornecedor,
-      tipo,
-
-      id,
-      comprovante,
-    } = req.body;
+    const { conta, valor, descricao, fornecedor, tipo, id, comprovante } =
+      req.body;
     switch (method) {
       case "GET":
         //buscar no mongodb
@@ -27,7 +19,7 @@ const handler = async (req, res) => {
         const data = await db
           .collection("despesas")
           .find()
-          .limit(100)
+          // .limit(100)
           .sort({ data: -1 })
           .toArray();
 

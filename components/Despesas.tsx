@@ -15,7 +15,7 @@ export default function Despesas(props) {
   function renderizarAcoes(despesas) {
     return (
       <td className=" flex py-2 justify-center text-center">
-        <Link href={`/comprovantes/${despesas.comprovante}`}>
+        <Link href={`${despesas.comprovante}`}>
           <a className="flex justify-center items-center text-yellow-500 p-2 m-1">
             {IconeFile}
           </a>

@@ -125,9 +125,6 @@ export default function FormularioDesp(props) {
           onClick={function () {
             campoFornecedor();
           }}
-          // onClick={function () {
-          //   novoFornecedor();
-          // }}
           className={`bg-blue-500 h-10  mt-8 text-white text-sm px-4 py-2 rounded-md`}
         >
           +
