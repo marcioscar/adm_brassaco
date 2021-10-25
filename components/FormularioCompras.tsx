@@ -120,7 +120,7 @@ export default function FormularioCompras(props) {
                 type="number"
                 id="nf"
                 name="nf"
-                className="border bg-gray-100 py-2 px-4 w-96 outline-none focus:ring-2 focus:ring-indigo-400 rounded"
+                className="border bg-gray-100 py-2 px-4 w-60 outline-none focus:ring-2 focus:ring-indigo-400 rounded"
                 placeholder="Numero NF"
               />
               <ErrorMessage
@@ -153,11 +153,6 @@ export default function FormularioCompras(props) {
                 className="border bg-gray-100 py-2 px-4 w-96 outline-none focus:ring-2 focus:ring-indigo-400 rounded"
                 placeholder="Valor R$"
               /> */}
-              <ErrorMessage
-                className=" text-red-500"
-                name="valor"
-                component="div"
-              />
             </div>
           </div>
           <div className="flex-1 flex flex-row md:space-x-4 w-full text-xs">
