@@ -6,29 +6,48 @@ import { ObjectId } from "mongodb";
 const handler = nc()
   .use(upload.single("file"))
   .post(async (req, res) => {
-    const { conta, valor, descricao, fornecedor, tipo, id } = req.body;
-
+    const { conta, valor, descricao, fornecedor, tipo, id, file } = req.body;
     const { db } = await connectToDatabase();
-
-    const despesa = await db.collection("despesas").updateOne(
-      { _id: ObjectId(id) },
-      [
-        {
-          $set: {
-            conta: conta,
-            valor: +valor,
-            descricao: descricao,
-            fornecedor: fornecedor,
-            tipo: tipo,
-            data: new Date(),
-            comprovante: req.file.location,
+    if (!file) {
+      const despesa = await db.collection("despesas").updateOne(
+        { _id: ObjectId(id) },
+        [
+          {
+            $set: {
+              conta: conta,
+              valor: +valor,
+              descricao: descricao,
+              fornecedor: fornecedor,
+              tipo: tipo,
+              data: new Date(),
+              comprovante: "/",
+            },
           },
-        },
-      ],
+        ],
 
-      { upsert: true }
-    );
+        { upsert: true }
+      );
+      console.log("vazio");
+    } else {
+      const despesa = await db.collection("despesas").updateOne(
+        { _id: ObjectId(id) },
+        [
+          {
+            $set: {
+              conta: conta,
+              valor: +valor,
+              descricao: descricao,
+              fornecedor: fornecedor,
+              tipo: tipo,
+              data: new Date(),
+              comprovante: req.file.location,
+            },
+          },
+        ],
 
+        { upsert: true }
+      );
+    }
     res.status(200).json(despesa);
   })
 

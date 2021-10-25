@@ -94,7 +94,10 @@ export default function FormDespesa(props) {
       // valor: parseFloat(
       //   values.valor.toString().replace(/\./g, "").replace(",", ".")
       // ),
-      valor: values.valor,
+      // valor: values.valor,
+      valor: parseFloat(
+        values.valor.toString().replace(/\./g, "").replace(",", ".")
+      ),
       descricao: values.descricao,
       fornecedor: values.fornecedor,
       id: values.id ?? Math.floor(Math.random() * 900000000000),
@@ -172,7 +175,7 @@ export default function FormDespesa(props) {
                   className="border bg-gray-100 py-2 px-4 w-96 outline-none focus:ring-2 focus:ring-indigo-400 rounded"
                   name="valor"
                   id="valor"
-                  type="number"
+                  type="text"
                   placeholder="Valor"
                 />
               </div>
