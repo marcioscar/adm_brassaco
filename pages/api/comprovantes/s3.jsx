@@ -8,47 +8,51 @@ const handler = nc()
   .post(async (req, res) => {
     const { conta, valor, descricao, fornecedor, tipo, id, file } = req.body;
     const { db } = await connectToDatabase();
-    if (!file) {
-      const despesa = await db.collection("despesas").updateOne(
-        { _id: ObjectId(id) },
-        [
-          {
-            $set: {
-              conta: conta,
-              valor: +valor,
-              descricao: descricao,
-              fornecedor: fornecedor,
-              tipo: tipo,
-              data: new Date(),
-              comprovante: "/",
+    switch (file) {
+      case "":
+        const despesa = await db.collection("despesas").updateOne(
+          { _id: ObjectId(id) },
+          [
+            {
+              $set: {
+                conta: conta,
+                valor: +valor,
+                descricao: descricao,
+                fornecedor: fornecedor,
+                tipo: tipo,
+                data: new Date(),
+                comprovante: "/",
+              },
             },
-          },
-        ],
+          ],
 
-        { upsert: true }
-      );
-      console.log("vazio");
-    } else {
-      const despesa = await db.collection("despesas").updateOne(
-        { _id: ObjectId(id) },
-        [
-          {
-            $set: {
-              conta: conta,
-              valor: +valor,
-              descricao: descricao,
-              fornecedor: fornecedor,
-              tipo: tipo,
-              data: new Date(),
-              comprovante: req.file.location,
+          { upsert: true }
+        );
+        res.status(200).json(despesa);
+
+      case file:
+        const despesaf = await db.collection("despesas").updateOne(
+          { _id: ObjectId(id) },
+          [
+            {
+              $set: {
+                conta: conta,
+                valor: +valor,
+                descricao: descricao,
+                fornecedor: fornecedor,
+                tipo: tipo,
+                data: new Date(),
+                comprovante: req.file.location,
+              },
             },
-          },
-        ],
+          ],
 
-        { upsert: true }
-      );
+          { upsert: true }
+        );
+        res.status(200).json(despesaf);
     }
-    res.status(200).json(despesa);
+
+    // res.status(200).json(despesa);
   })
 
   .patch(async (req, res) => {

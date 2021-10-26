@@ -73,7 +73,7 @@ export default function FormularioCompras(props) {
       valor: parseFloat(
         values.valor.toString().replace(/\./g, "").replace(",", ".")
       ),
-      // valor: values.valor,
+      //valor: values.valor,
       nf: values.nf,
       fornecedor: values.fornecedor,
       id: values.id,
@@ -137,7 +137,13 @@ export default function FormularioCompras(props) {
                 Valor
               </label>
 
-              <MoneyInput name="valor" id="valor" />
+              <Field
+                className="border bg-gray-100 py-2 px-4 w-96 outline-none focus:ring-2 focus:ring-indigo-400 rounded"
+                name="valor"
+                id="valor"
+                type="text"
+                placeholder="Valor"
+              />
 
               {/* <Field
                 type="float"
