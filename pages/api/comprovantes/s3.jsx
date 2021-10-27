@@ -29,6 +29,7 @@ const handler = nc()
           { upsert: true }
         );
         res.status(200).json(despesa);
+        break;
 
       case file:
         const despesaf = await db.collection("despesas").updateOne(
@@ -50,6 +51,7 @@ const handler = nc()
           { upsert: true }
         );
         res.status(200).json(despesaf);
+        break;
     }
 
     // res.status(200).json(despesa);
