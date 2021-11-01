@@ -93,7 +93,8 @@ export default function FormularioCompras(props) {
         initialValues={{
           id: props.compra?._id,
           nf: props.compra?.nf,
-          valor: props.compra?.valor,
+          // valor: props.compra?.valor,
+          valor: (props.compra?.valor).toLocaleString("de-DE"),
           data_compra: props.compra?.data,
           fornecedor: props.compra?.fornecedor,
         }}
