@@ -42,7 +42,8 @@ export default function Home() {
   );
   const estoqueAnterior = estoque.data.filter((estoque) =>
     estoque.data.includes(
-      new Date().getFullYear() + "-" + mes
+      // new Date().getFullYear() + "-" + mes
+      new Date().getFullYear() + "-" + "0" + +(parseInt(mes) - 1)
       // String(new Date().getMonth()).padStart(2, "0")
     )
   );
@@ -155,7 +156,7 @@ export default function Home() {
     return total;
   }
 
-  console.log(soma(estoqueAnterior));
+  console.log("estoque anterior" + "0" + (parseInt(mes) - 1));
 
   function receitaSelecionada(receitas) {
     SetReceita(receitas);
