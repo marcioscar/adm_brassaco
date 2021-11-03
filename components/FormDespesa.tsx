@@ -118,7 +118,10 @@ export default function FormDespesa(props) {
         initialValues={{
           id: props.despesa?._id,
           conta: props.despesa?.conta,
-          valor: (props.despesa?.valor).toLocaleString("de-DE"),
+
+          valor: props.despesa?.valor
+            ? (props.despesa?.valor).toLocaleString("de-DE")
+            : props.despesa?.valor,
           descricao: props.despesa?.descricao,
           fornecedor: props.despesa?.fornecedor,
           tipo: props.despesa?.tipo,

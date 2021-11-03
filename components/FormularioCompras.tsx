@@ -89,12 +89,17 @@ export default function FormularioCompras(props) {
       <div className="text-center text-lg font-medium ">
         Cadastro de Compras
       </div>
+
       <Formik
         initialValues={{
           id: props.compra?._id,
           nf: props.compra?.nf,
+          valor: props.compra?.valor
+            ? (props.compra?.valor).toLocaleString("de-DE")
+            : props.compra?.valor,
+          // valor: [((props.compra?.valor)) : (props.compra?.valor).toLocaleString("de-DE")?props.compra?.valor)] ,
           // valor: props.compra?.valor,
-          valor: (props.compra?.valor).toLocaleString("de-DE"),
+          // valor: (props.compra?.valor).toLocaleString("de-DE"),
           data_compra: props.compra?.data,
           fornecedor: props.compra?.fornecedor,
         }}
