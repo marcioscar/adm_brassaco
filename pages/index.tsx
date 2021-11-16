@@ -36,18 +36,20 @@ export default function Home() {
 
   const estoqueAtual = estoque.data.filter((estoque) =>
     estoque.data.includes(
+      // +mes >= 10
       new Date().getFullYear() + "-" + mes
-      // String(new Date().getMonth() + 1).padStart(2, "0")
-    )
-  );
-  const estoqueAnterior = estoque.data.filter((estoque) =>
-    estoque.data.includes(
-      // new Date().getFullYear() + "-" + mes
-      new Date().getFullYear() + "-" + "0" + +(parseInt(mes) - 1)
-      // String(new Date().getMonth()).padStart(2, "0")
+      // : new Date().getFullYear() + "-" + "0" + +parseInt(mes)
     )
   );
 
+  const estoqueAnterior = estoque.data.filter((estoque) =>
+    estoque.data.includes(
+      +mes > 10
+        ? new Date().getFullYear() + "-" + (parseInt(mes) - 1)
+        : new Date().getFullYear() + "-" + "0" + +(parseInt(mes) - 1)
+    )
+  );
+  console.log("mes:" + mes);
   const receitaTotal = receitas.data.filter((receitas) =>
     receitas.data.includes(
       new Date().getFullYear() + "-" + mes
@@ -155,8 +157,6 @@ export default function Home() {
     }
     return total;
   }
-
-  console.log("estoque anterior" + "0" + (parseInt(mes) - 1));
 
   function receitaSelecionada(receitas) {
     SetReceita(receitas);
