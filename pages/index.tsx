@@ -7,11 +7,12 @@ import Botao from "../components/Botao";
 import Formulario from "../components/Formulario";
 import useSWR, { useSWRConfig } from "swr";
 import api from "../utils/api";
-import FormularioDesp from "../components/FormularioDesp";
 import FormDespesa from "../components/FormDespesa";
 import Compras from "../components/Compras";
 import Dre from "../components/Dre";
 import FormularioCompras from "../components/FormularioCompras";
+import FormPreco from "../components/FormPreco";
+import Precos from "../components/Precos";
 
 export default function Home() {
   const [tabelaNome, settabelaNome] = useState("Receitas");
@@ -19,6 +20,7 @@ export default function Home() {
   const [receita, SetReceita] = useState({});
   const [despesa, SetDespesa] = useState({});
   const [compra, SetCompra] = useState({});
+  const [preco, SetPreco] = useState({});
   const [mes, SetMes] = useState(
     String(new Date().getMonth() + 1).padStart(2, "0")
   );
@@ -28,11 +30,13 @@ export default function Home() {
   const { data: despesas } = useSWR("/api/despesas", api);
   const { data: compras } = useSWR("/api/compras", api);
   const { data: estoque } = useSWR("/api/estoque", api);
+  const { data: precos } = useSWR("/api/precos", api);
 
   if (!receitas) return "Carregando...";
   if (!despesas) return "Carregando...";
   if (!compras) return "Carregando...";
   if (!estoque) return "Carregando...";
+  if (!precos) return "Carregando...";
 
   const estoqueAtual = estoque.data.filter((estoque) =>
     estoque.data.includes(
@@ -239,6 +243,11 @@ export default function Home() {
     setVisivel("form");
   }
 
+  function novoPreco() {
+    SetPreco({});
+    setVisivel("form");
+  }
+
   const salvarReceita = async (Receita) => {
     await fetch(
       "/api/receitas",
@@ -278,24 +287,7 @@ export default function Home() {
     mutate("/api/despesas");
     setVisivel("tabela");
   };
-  // mutate("/api/despesas");
-  // setVisivel("tabela");
-  // const salvarDespesa = async (Despesa) => {
-  //   await fetch(
-  //     "/api/despesas",
 
-  //     {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-
-  //       body: JSON.stringify(Despesa),
-  //     }
-  //   );
-  //   mutate("/api/despesas");
-  //   setVisivel("tabela");
-  // };
   const salvarCompra = async (Compras) => {
     console.log(Compras);
 
@@ -322,11 +314,21 @@ export default function Home() {
           <div className="grid grid-cols-12 gap-6">
             <div className="grid grid-cols-12 col-span-12 gap-6 xxl:col-span-9">
               <div className="col-span-12 mt-8">
-                <div className="flex justify-between	 items-center  h-10 mb-4 ">
+                <div className="flex justify-between items-center  h-10 mb-4 ">
                   <div>
                     <Image width={200} src={logo} alt="Logo Brassaco" />
                   </div>
+
                   <div>
+                    <button
+                      onClick={function () {
+                        settabelaNome("Precos");
+                        mutate("/api/receitas");
+                      }}
+                      className=" bg-green-500 text-white text-sm px-4 py-2 rounded-md mr-8 transform  hover:scale-105 transition duration-300 shadow-md "
+                    >
+                      Preço de venda
+                    </button>
                     <label className="mr-2 font-medium">Mês selecionado:</label>
                     <select
                       className="rounded text-blue-600 h-8 w-60 pl-5 pr-10 hover:border-gray-400 focus:outline-none appearance-none"
@@ -650,6 +652,11 @@ export default function Home() {
                                 Adicionar
                               </Botao>
                             )}
+                            {tabelaNome === "Precos" && (
+                              <Botao cor="blue" onClick={() => novoPreco()}>
+                                Adicionar
+                              </Botao>
+                            )}
                           </div>
                         </div>
 
@@ -721,6 +728,18 @@ export default function Home() {
                             </div>
                           </div>
                         )}
+                        {tabelaNome === "Precos" && (
+                          <div className="mt-4">
+                            <div className="flex flex-col">
+                              <div className="-my-2 overflow-x-auto">
+                                <div className="py-2 align-middle inline-block min-w-full">
+                                  <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg bg-white"></div>
+                                  <Precos precos={precos.data} />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </>
                     ) : (
                       <div>
@@ -741,6 +760,13 @@ export default function Home() {
                         {tabelaNome === "Compras" && (
                           <FormularioCompras
                             compra={compra}
+                            compraMudou={salvarCompra}
+                            cancelado={() => setVisivel("tabela")}
+                          />
+                        )}
+                        {tabelaNome === "Precos" && (
+                          <FormPreco
+                            preco={preco}
                             compraMudou={salvarCompra}
                             cancelado={() => setVisivel("tabela")}
                           />
