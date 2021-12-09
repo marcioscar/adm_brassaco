@@ -50,21 +50,6 @@ export default function SignIn({ csrfToken }) {
         </div>
       </div>
     </form>
-    ///fim pagina login
-
-    // <form method="post" action="/api/auth/callback/credentials">
-    //   <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-    //   <label>
-    //     Username Usuario
-    //     <input name="username" type="text" />
-    //   </label>
-    //   <label>
-    //     Senha
-    //     <input name="password" type="password" />
-    //   </label>
-    //   <button type="submit">Sign in</button>
-    //   {error?.length > 0 && <h2>Verifique usuário e senha</h2>}
-    // </form>
   );
 }
 
