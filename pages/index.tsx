@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Despesas from "../components/Despesas";
 import Receitas from "../components/Receitas";
 import logo from "../public/logo_bel.svg";
@@ -13,8 +13,29 @@ import Dre from "../components/Dre";
 import FormularioCompras from "../components/FormularioCompras";
 import FormPreco from "../components/FormPreco";
 import Precos from "../components/Precos";
+import { signOut, signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 
 export default function Home() {
+  const { data: session, status } = useSession();
+
+  const router = useRouter();
+
+  // console.log("session", session);
+
+  useEffect(() => {
+    if (status != "loading") {
+      if (session) {
+        // console.log("session = true");
+        router.push("/");
+      } else {
+        // maybe go to login page
+        router.push("/auth/signin");
+        //signIn();
+      }
+    }
+  }, [status, session]);
+
   const [tabelaNome, settabelaNome] = useState("Receitas");
   const [visivel, setVisivel] = useState<"tabela" | "form">("tabela");
   const [receita, SetReceita] = useState({});
@@ -310,6 +331,8 @@ export default function Home() {
   return (
     <div>
       <main className="">
+        {/* {session ? ( */}
+
         <div className="grid mb-4 pb-10 px-8 mx-4 rounded-3xl bg-gray-100 ">
           <div className="grid grid-cols-12 gap-6">
             <div className="grid grid-cols-12 col-span-12 gap-6 xxl:col-span-9">
@@ -351,6 +374,12 @@ export default function Home() {
                       <option value="11">Novembro</option>
                       <option value="12">Dezembro</option>
                     </select>
+                    <button
+                      className="bg-gray-600 flex-shrink-0 ml-4 text-white text-sm px-4 py-2 rounded-md mr-8 transform  hover:scale-105 transition duration-300 shadow-md "
+                      onClick={() => signOut()}
+                    >
+                      Sair
+                    </button>
                   </div>
                 </div>
 
@@ -779,6 +808,19 @@ export default function Home() {
             </div>
           </div>
         </div>
+        {/* ) : (
+          <div>
+            Login
+            {router.push("/auth/signin")}
+          </div>
+          // <button
+          //   onClick={() => {
+          //     signIn();
+          //   }}
+          // >
+          //   Sign in
+          // </button>
+        )} */}
       </main>
     </div>
   );
