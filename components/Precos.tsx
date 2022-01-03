@@ -1,31 +1,25 @@
 import { useState } from "react";
 
-import { IconeEdicao, IconeDelete } from "./icones";
+import { IconeSelecao } from "./icones";
 
 export default function Precos(props) {
   const [searchAll, setSearchAll] = useState("");
 
   const receitaFilter = props.precos?.filter(
     (precos) =>
-      precos.descricao.toLowerCase().includes(searchAll.toLowerCase()) ||
-      precos.codigo.toString().includes(searchAll.toLowerCase()) ||
-      precos.valor.toString().includes(searchAll.toLowerCase())
+      precos.DESCRICAO.toLowerCase().includes(searchAll.toLowerCase()) ||
+      precos.CODPRODUTO.toString().includes(searchAll.toLowerCase()) ||
+      precos.PRECO.toString().includes(searchAll.toLowerCase())
     // receitas.valor.includes(searchAll.toLowerCase())
   );
   function renderizarAcoes(precos) {
     return (
       <td className=" flex py-2 justify-center text-center">
         <button
-          onClick={() => props.receitaSelecionada?.(precos)}
+          onClick={() => props.produtoSelecionado?.(precos)}
           className="flex justify-center items-center text-blue-600 p-2 m-1"
         >
-          {IconeEdicao}
-        </button>
-        <button
-          onClick={() => props.receitaExcluida?.(precos)}
-          className="flex justify-center items-center text-red-600 p-2 m-1"
-        >
-          {IconeDelete}
+          {IconeSelecao}
         </button>
       </td>
     );
@@ -59,8 +53,8 @@ export default function Precos(props) {
             <tr className="bg-gray-200 text-gray-500 uppercase text-sm leading-normal">
               <th className="py-2 pl-1 text-left">Código</th>
               <th className="py-2 pl-1 text-left">descrição</th>
+              <th className="py-2 pl-1 text-left">Compra</th>
               <th className="py-2 pl-1 text-left">Valor</th>
-              <th className="py-2 pl-1 text-left">Data</th>
               <th className="py-2 px-2 text-center">Ações</th>
             </tr>
           </thead>
@@ -74,21 +68,31 @@ export default function Precos(props) {
                 <td className="">
                   <div className="flex items-left ">
                     <div className=" py-2  pr-1 text-left whitespace-nowrap">
-                      {precos.codigo}
+                      {precos.CODPRODUTO}
+                    </div>
+                  </div>
+                </td>
+                <td className="">
+                  <div className="flex items-left ">
+                    <div className=" w-32 py-2 pr-1 text-left whitespace-nowrap">
+                      {precos.DESCRICAO}
                     </div>
                   </div>
                 </td>
                 <td className="">
                   <div className="flex items-left ">
                     <div className=" py-2 pr-1 text-left whitespace-nowrap">
-                      {precos.descricao}
+                      {precos.COMPRA.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
                     </div>
                   </div>
                 </td>
                 <td className="">
                   <div className="flex items-left ">
                     <div className=" py-2 pr-1 text-left whitespace-nowrap">
-                      {precos.valor.toLocaleString("pt-BR", {
+                      {precos.PRECO.toLocaleString("pt-BR", {
                         style: "currency",
                         currency: "BRL",
                       })}
@@ -96,15 +100,6 @@ export default function Precos(props) {
                   </div>
                 </td>
 
-                <td className="">
-                  <div className="flex items-left ">
-                    <div className=" py-2 pr-1 text-left whitespace-nowrap">
-                      {new Date(precos.data).toLocaleDateString("pt-BR", {
-                        timeZone: "UTC",
-                      })}
-                    </div>
-                  </div>
-                </td>
                 {renderizarAcoes(precos)}
               </tr>
             ))}

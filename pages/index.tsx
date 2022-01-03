@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Despesas from "../components/Despesas";
@@ -21,7 +22,7 @@ export default function Home() {
 
   const router = useRouter();
 
-  // console.log("session", session);
+  console.log("session", session);
 
   useEffect(() => {
     if (status != "loading") {
@@ -42,16 +43,18 @@ export default function Home() {
   const [despesa, SetDespesa] = useState({});
   const [compra, SetCompra] = useState({});
   const [preco, SetPreco] = useState({});
+  const [produto, SetProduto] = useState({});
   const [mes, SetMes] = useState(
     String(new Date().getMonth() + 1).padStart(2, "0")
   );
+  const [ano, SetAno] = useState(String(new Date().getFullYear()));
 
   const { mutate } = useSWRConfig();
   const { data: receitas } = useSWR("/api/receitas", api);
   const { data: despesas } = useSWR("/api/despesas", api);
   const { data: compras } = useSWR("/api/compras", api);
   const { data: estoque } = useSWR("/api/estoque", api);
-  const { data: precos } = useSWR("/api/precos", api);
+  const { data: precos } = useSWR("/api/produtos", api);
 
   if (!receitas) return "Carregando...";
   if (!despesas) return "Carregando...";
@@ -62,35 +65,51 @@ export default function Home() {
   const estoqueAtual = estoque.data.filter((estoque) =>
     estoque.data.includes(
       // +mes >= 10
-      new Date().getFullYear() + "-" + mes
+      ano + "-" + mes
       // : new Date().getFullYear() + "-" + "0" + +parseInt(mes)
     )
   );
 
+  // const estoqueAnterior = estoque.data.filter((estoque) =>
+  //   estoque.data.includes(
+  //     +mes > 10
+  //       ? new Date().getFullYear() + "-" + (parseInt(mes) - 1)
+  //       : new Date().getFullYear() + "-" + "0" + +(parseInt(mes) - 1)
+  //   )
+
+  // );
+
   const estoqueAnterior = estoque.data.filter((estoque) =>
     estoque.data.includes(
-      +mes > 10
-        ? new Date().getFullYear() + "-" + (parseInt(mes) - 1)
-        : new Date().getFullYear() + "-" + "0" + +(parseInt(mes) - 1)
+      +mes == 10
+        ? ano + "-" + (parseInt(mes) - 1)
+        : +mes == 11
+        ? ano + "-" + (parseInt(mes) - 1)
+        : +mes == 12
+        ? ano + "-" + (parseInt(mes) - 1)
+        : +mes == 1
+        ? parseInt(ano) - 1 + "-" + 12
+        : ano + "-" + "0" + +(parseInt(mes) - 1)
     )
   );
-  console.log("mes:" + mes);
+
   const receitaTotal = receitas.data.filter((receitas) =>
     receitas.data.includes(
-      new Date().getFullYear() + "-" + mes
+      // new Date().getFullYear() + "-" + mes
+      ano + "-" + mes
       // String(new Date().getMonth() + 1).padStart(2, "0")
     )
   );
 
   const despesaTotal = despesas?.data.filter((despesas) =>
     despesas.data.includes(
-      new Date().getFullYear() + "-" + mes
+      ano + "-" + mes
       // String(new Date().getMonth() + 1).padStart(2, "0")
     )
   );
   const compraTotal = compras?.data.filter((compras) =>
     compras.data.includes(
-      new Date().getFullYear() + "-" + mes
+      ano + "-" + mes
       // String(new Date().getMonth() + 1).padStart(2, "0")
     )
   );
@@ -100,7 +119,7 @@ export default function Home() {
       // receitas.loja.includes("QI") && receitas.data.includes("2021-08")
       receitas.loja.includes("QI") &&
       receitas.data.includes(
-        new Date().getFullYear() + "-" + mes
+        ano + "-" + mes
         // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
@@ -110,7 +129,7 @@ export default function Home() {
       // receitas.loja.includes("QI") && receitas.data.includes("2021-08")
       receitas.loja.includes("QNE") &&
       receitas.data.includes(
-        new Date().getFullYear() + "-" + mes
+        ano + "-" + mes
         // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
@@ -119,7 +138,7 @@ export default function Home() {
       // receitas.loja.includes("QI") && receitas.data.includes("2021-08")
       receitas.loja.includes("NRT") &&
       receitas.data.includes(
-        new Date().getFullYear() + "-" + mes
+        ano + "-" + mes
         // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
@@ -128,7 +147,7 @@ export default function Home() {
       // receitas.loja.includes("QI") && receitas.data.includes("2021-08")
       receitas.loja.includes("SDS") &&
       receitas.data.includes(
-        new Date().getFullYear() + "-" + mes
+        ano + "-" + mes
         // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
@@ -137,7 +156,7 @@ export default function Home() {
     (despesas) =>
       despesas.conta.includes("Pessoal") &&
       despesas.data.includes(
-        new Date().getFullYear() + "-" + mes
+        ano + "-" + mes
         // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
@@ -145,7 +164,7 @@ export default function Home() {
     (despesas) =>
       despesas.conta.includes("Revenda") &&
       despesas.data.includes(
-        new Date().getFullYear() + "-" + mes
+        ano + "-" + mes
         // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
@@ -153,7 +172,7 @@ export default function Home() {
     (despesas) =>
       despesas.conta.includes("Imposto") &&
       despesas.data.includes(
-        new Date().getFullYear() + "-" + mes
+        ano + "-" + mes
         // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
@@ -161,7 +180,7 @@ export default function Home() {
     (despesas) =>
       despesas.conta.includes("Servicos") &&
       despesas.data.includes(
-        new Date().getFullYear() + "-" + mes
+        ano + "-" + mes
         // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
@@ -170,7 +189,7 @@ export default function Home() {
     (despesas) =>
       despesas.tipo.includes("fixa") &&
       despesas.data.includes(
-        new Date().getFullYear() + "-" + mes
+        ano + "-" + mes
         // String(new Date().getMonth() + 1).padStart(2, "0")
       )
   );
@@ -249,6 +268,12 @@ export default function Home() {
     SetCompra(compras);
     setVisivel("form");
     console.log(compras.fornecedor);
+  }
+
+  function produtoSelecionado(precos) {
+    SetProduto(precos);
+    setVisivel("form");
+    console.log(precos.DESCRICAO);
   }
 
   function novaReceita() {
@@ -346,7 +371,7 @@ export default function Home() {
                     <button
                       onClick={function () {
                         settabelaNome("Precos");
-                        mutate("/api/receitas");
+                        mutate("/api/precos");
                       }}
                       className=" bg-green-500 text-white text-sm px-4 py-2 rounded-md mr-8 transform  hover:scale-105 transition duration-300 shadow-md "
                     >
@@ -373,6 +398,21 @@ export default function Home() {
                       <option value="10">Outubro</option>
                       <option value="11">Novembro</option>
                       <option value="12">Dezembro</option>
+                    </select>
+                    <label className="ml-2 mr-2 font-medium">Ano:</label>
+                    <select
+                      className="rounded text-blue-600 h-8  w-40 pl-5 pr-10 hover:border-gray-400 focus:outline-none appearance-none"
+                      value={ano}
+                      onChange={(e) => SetAno(e.target.value)}
+                    >
+                      <option hidden={true} value="">
+                        Selecione o Ano:
+                      </option>
+                      <option value="2021">2021</option>
+                      <option value="2022">2022</option>
+                      <option value="2023">2023</option>
+                      <option value="2024">2024</option>
+                      <option value="2025">2025</option>
                     </select>
                     <button
                       className="bg-gray-600 flex-shrink-0 ml-4 text-white text-sm px-4 py-2 rounded-md mr-8 transform  hover:scale-105 transition duration-300 shadow-md "
@@ -681,11 +721,6 @@ export default function Home() {
                                 Adicionar
                               </Botao>
                             )}
-                            {tabelaNome === "Precos" && (
-                              <Botao cor="blue" onClick={() => novoPreco()}>
-                                Adicionar
-                              </Botao>
-                            )}
                           </div>
                         </div>
 
@@ -763,7 +798,10 @@ export default function Home() {
                               <div className="-my-2 overflow-x-auto">
                                 <div className="py-2 align-middle inline-block min-w-full">
                                   <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg bg-white"></div>
-                                  <Precos precos={precos.data} />
+                                  <Precos
+                                    precos={precos.data}
+                                    produtoSelecionado={produtoSelecionado}
+                                  />
                                 </div>
                               </div>
                             </div>
@@ -795,8 +833,7 @@ export default function Home() {
                         )}
                         {tabelaNome === "Precos" && (
                           <FormPreco
-                            preco={preco}
-                            compraMudou={salvarCompra}
+                            produto={produto}
                             cancelado={() => setVisivel("tabela")}
                           />
                         )}

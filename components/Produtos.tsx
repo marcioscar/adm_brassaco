@@ -4,7 +4,7 @@ import useSWR from "swr";
 import api from "../utils/api";
 import { IconeSelecao } from "./icones";
 
-export default function Produtos() {
+export default function Produtos(props) {
   const [searchAll, setSearchAll] = useState("");
   const { data, error } = useSWR("/api/produtos", api);
 
@@ -12,7 +12,7 @@ export default function Produtos() {
     return (
       <td className=" flex py-2 justify-center text-center">
         <button
-          // onClick={() => props.despesaSelecionada?.(despesas)}
+          onClick={() => props.produtoSelecionado?.(produto)}
           className="flex justify-center items-center text-blue-600 "
         >
           {IconeSelecao}
