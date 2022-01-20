@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Despesas from "../components/Despesas";
@@ -16,13 +15,13 @@ import FormPreco from "../components/FormPreco";
 import Precos from "../components/Precos";
 import { signOut, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
   const { data: session, status } = useSession();
 
   const router = useRouter();
-
-  console.log("session", session);
 
   useEffect(() => {
     if (status != "loading") {
@@ -295,7 +294,7 @@ export default function Home() {
   }
 
   const salvarReceita = async (Receita) => {
-    await fetch(
+    const response = await fetch(
       "/api/receitas",
 
       {
@@ -309,6 +308,13 @@ export default function Home() {
     );
     mutate("/api/receitas");
     setVisivel("tabela");
+    response.status === 200
+      ? toast.success("Cadastrado com sucesso", {
+          position: toast.POSITION.TOP_CENTER,
+        })
+      : toast.error("Algo deu errado !!!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
   };
   const salvarDespesa = async (values) => {
     let data = new FormData();
@@ -328,8 +334,19 @@ export default function Home() {
       }),
       body: data,
     })
-      .then((response) => response.json())
-      .catch((error) => console.log(error));
+      .then((response) => {
+        response.json();
+        console.log(response.status);
+        toast.success("Cadastrado com sucesso", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Erro ao cadastrar !!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      });
     mutate("/api/despesas");
     setVisivel("tabela");
   };
@@ -337,7 +354,7 @@ export default function Home() {
   const salvarCompra = async (Compras) => {
     console.log(Compras);
 
-    await fetch(
+    const response = await fetch(
       "/api/compras",
 
       {
@@ -349,6 +366,15 @@ export default function Home() {
         body: JSON.stringify(Compras),
       }
     );
+    response.status === 200
+      ? toast.success("Cadastrado com sucesso", {
+          position: toast.POSITION.TOP_CENTER,
+          theme: "colored",
+        })
+      : toast.error("Algo deu errado !!!", {
+          position: toast.POSITION.TOP_CENTER,
+          theme: "colored",
+        });
     mutate("/api/compras");
     setVisivel("tabela");
   };
@@ -357,7 +383,7 @@ export default function Home() {
     <div>
       <main className="">
         {/* {session ? ( */}
-
+        <ToastContainer autoClose={2000} />
         <div className="grid mb-4 pb-10 px-8 mx-4 rounded-3xl bg-gray-100 ">
           <div className="grid grid-cols-12 gap-6">
             <div className="grid grid-cols-12 col-span-12 gap-6 xxl:col-span-9">
