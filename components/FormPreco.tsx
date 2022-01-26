@@ -31,6 +31,17 @@ export default function FormPreco(props) {
     return lucro;
   }
 
+  function mc(pv?, compra?) {
+    var mc = pv - compra * 0.0983 - compra;
+    var mcp = mc / pv;
+    return mcp;
+  }
+
+  function mcvalor(pv?, compra?) {
+    var mc = pv - compra * 0.0983 - compra;
+    return mc;
+  }
+
   console.log("lucro calculado novo " + lucronovo(6.49, 9.45));
 
   console.log(
@@ -210,6 +221,51 @@ export default function FormPreco(props) {
                 ),
                 parseFloat(
                   lucro.toString().replace(/\./g, "").replace(",", ".")
+                )
+              )
+            )}
+          </label>
+        </div>
+        <div className="flex flex-col items-center">
+          <label
+            htmlFor="default"
+            className="mb-1 text-gray-700 select-none font-medium"
+          >
+            Margem de Contribuição
+          </label>
+          <label className="text-blue-800 text-3xl font-bold">
+            {new Intl.NumberFormat("pt-BR", {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            }).format(
+              mc(
+                parseFloat(
+                  props.produto?.PRECO.toString()
+                    .replace(/\./g, "")
+                    .replace(",", ".")
+                ),
+                parseFloat(
+                  props.produto?.COMPRA.toString()
+                    .replace(/\./g, "")
+                    .replace(",", ".")
+                )
+              )
+            )}
+            % / R$
+            {new Intl.NumberFormat("pt-BR", {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            }).format(
+              mcvalor(
+                parseFloat(
+                  props.produto?.PRECO.toString()
+                    .replace(/\./g, "")
+                    .replace(",", ".")
+                ),
+                parseFloat(
+                  props.produto?.COMPRA.toString()
+                    .replace(/\./g, "")
+                    .replace(",", ".")
                 )
               )
             )}
