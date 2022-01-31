@@ -4,12 +4,24 @@ import useSWR, { useSWRConfig } from "swr";
 import api from "../utils/api";
 import { useState } from "react";
 import NumberFormat from "react-number-format";
+import Modal from "react-modal";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function FormDespesa(props) {
-  //const id = props.despesa?._id;
   const [adicionar, setAdicionar] = useState(false);
   const [nome, setNome] = useState("");
   const { mutate } = useSWRConfig();
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [fornecedor, setFornecedor] = useState("");
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   function MoneyInput(props) {
     const { name } = props;
@@ -36,7 +48,7 @@ export default function FormDespesa(props) {
 
   const novoFornecedor = async () => {
     // console.log(nome);
-    await fetch(
+    const response = await fetch(
       "/api/fornecedor",
 
       {
@@ -45,11 +57,21 @@ export default function FormDespesa(props) {
           "Content-Type": "application/json",
         },
 
-        body: JSON.stringify(nome),
+        body: JSON.stringify(fornecedor),
       }
     );
+    response.status === 200
+      ? toast.success("Cadastrado com sucesso", {
+          position: toast.POSITION.BOTTOM_CENTER,
+          theme: "colored",
+        })
+      : toast.error("Algo deu errado !!!", {
+          position: toast.POSITION.BOTTOM_CENTER,
+          theme: "colored",
+        });
     setAdicionar(false);
-    setNome("");
+    setFornecedor("");
+    closeModal();
     mutate("/api/fornecedor");
   };
 
@@ -111,6 +133,66 @@ export default function FormDespesa(props) {
 
   return (
     <div>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          content: {
+            marginLeft: "auto",
+            marginRight: "auto",
+            marginTop: "auto",
+            marginBottom: "auto",
+            backgroundColor: "#ededed",
+            width: "100%",
+            maxWidth: "578px",
+            maxHeight: "100%",
+            height: "250px",
+            align: "center",
+            flex: "flex-row",
+          },
+        }}
+      >
+        <div className="flex items-center justify-between gap-4">
+          <div className="items-center  text-xl font-semibold">
+            Cadastro de Fornecedor
+          </div>
+          <button
+            className="  bg-red-500 text-white text-sm px-4 py-2 rounded-md ml-4"
+            onClick={closeModal}
+          >
+            X
+          </button>
+        </div>
+        <div className=" mb-3 space-y-2 w-full text-xs">
+          <label
+            className="mr-2  w-10 text-gray-700 font-bold inline-block mt-4"
+            htmlFor="nf"
+          >
+            Nome:
+          </label>
+
+          <input
+            className="border rounded-md  border-gray-300 h-8 w-full pl-5 pr-10 bg-gray-100 hover:border-gray-400 focus:outline-none appearance-none"
+            type="text"
+            placeholder="Fornecedor"
+            value={fornecedor}
+            onChange={(e) => setFornecedor(e.target.value)}
+          />
+        </div>
+        <div className="flex justify-end ">
+          <button
+            className="  bg-blue-500 text-white text-sm px-4 py-2 rounded-md mt-4"
+            onClick={function () {
+              novoFornecedor();
+            }}
+          >
+            Cadastrar
+          </button>
+        </div>
+      </Modal>
       <div className="text-center text-lg font-medium ">
         Cadastro de Despesas
       </div>
@@ -208,7 +290,14 @@ export default function FormDespesa(props) {
                     </option>
                   ))}
                 </Field>
+                <button
+                  className="bg-green-500 text-white text-sm px-4 py-2 rounded-md ml-4"
+                  onClick={openModal}
+                >
+                  +
+                </button>
               </div>
+
               <div className=" mb-3 space-y-2 w-full text-xs">
                 <label
                   className="mr-4 w-16 text-gray-700 font-bold inline-block mb-2"
